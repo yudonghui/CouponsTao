@@ -63,6 +63,7 @@ public class TbDetailEntity {
 
         private String cat_leaf_name;
         private String cat_name;
+        private String content;
         private boolean free_shipment;
         private String hot_flag;
         private String item_url;//商品链接
@@ -90,6 +91,14 @@ public class TbDetailEntity {
         private String volume;
         private String zk_final_price;
         private List<String> small_images;
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
 
         public String getCat_leaf_name() {
             return cat_leaf_name;

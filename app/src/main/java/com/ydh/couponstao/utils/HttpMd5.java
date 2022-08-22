@@ -1,5 +1,7 @@
 package com.ydh.couponstao.utils;
 
+import com.ydh.couponstao.common.Constant;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -10,17 +12,15 @@ import okio.HashingSink;
  * Created by ydh on 2022/8/15
  */
 public class HttpMd5 {
-    private static String secretTb = "73aea5ebcbeedec91aa6ff10b3a8c416";//密钥
-    private static String secretJd = "c7b290141c2145ba9d052a563b5a03b6";//密钥
 
     public static String buildSignTb(Map<String, Object> map) {
-        StringBuffer buf = new StringBuffer(secretTb);
+        StringBuffer buf = new StringBuffer(Constant.APP_SECRET_TB);
         String sign;
         try {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 buf.append(entry.getKey()).append(entry.getValue());
             }
-            buf.append(secretTb);
+            buf.append(Constant.APP_SECRET_TB);
             sign = getMD5(buf.toString());
         } catch (Exception e) {
             return null;
@@ -28,13 +28,13 @@ public class HttpMd5 {
         return sign;
     }
     public static String buildSignJd(Map<String, Object> map) {
-        StringBuffer buf = new StringBuffer(secretJd);
+        StringBuffer buf = new StringBuffer(Constant.APP_SECRET_JD);
         String sign;
         try {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 buf.append(entry.getKey()).append(entry.getValue());
             }
-            buf.append(secretJd);
+            buf.append(Constant.APP_SECRET_JD);
             sign = getMD5(buf.toString());
         } catch (Exception e) {
             return null;

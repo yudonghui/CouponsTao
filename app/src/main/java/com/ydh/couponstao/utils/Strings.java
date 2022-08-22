@@ -190,4 +190,29 @@ public class Strings {
             return aint + "";
         }
     }
+
+    public static String getStrByStr(String money) {
+        double moneyInt = getDouble(money);
+        String nnmber;
+        if (moneyInt >= 10000 && moneyInt < 99999999) {//1万到一千万
+            nnmber = CommonUtil.getNnmber(moneyInt / 10000.0);
+            return getDecimalPointHandl(nnmber) + "万";
+        } else if (moneyInt < 10000) {
+            return moneyInt + "";
+        } else {
+            nnmber = CommonUtil.getNnmber(moneyInt / 100000000.0);
+            return getDecimalPointHandl(nnmber) + "亿";
+        }
+
+    }
+
+    public static String getDecimalPointHandl(String nnmber) {
+        if (nnmber.endsWith("00")) {
+            return nnmber.substring(0, nnmber.length() - 3);
+        } else if (nnmber.endsWith("0")) {
+            return nnmber.substring(0, nnmber.length() - 1);
+        } else {
+            return nnmber;
+        }
+    }
 }

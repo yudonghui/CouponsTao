@@ -29,6 +29,7 @@ public class TbCodeEntity {
         private String model;
         private String password_simple;
 
+
         public String getModel() {
             return model;
         }

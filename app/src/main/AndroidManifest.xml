@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ydh.couponstao">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission
+        android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".MyApplication"
@@ -13,7 +20,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".activitys.HWScanActivity"></activity>
+        <activity android:name=".activitys.SearchTbActivity" />
+        <activity android:name=".TestActivity" />
         <activity android:name=".activitys.H5Activity" />
         <activity android:name=".activitys.TbDetailActivity" />
         <activity android:name=".activitys.WebWiewActivity" />

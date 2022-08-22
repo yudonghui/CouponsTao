@@ -5,6 +5,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.utils.BitmapUtils;
 import com.ydh.couponstao.utils.LogUtils;
 import com.ydh.couponstao.utils.SPUtils;
@@ -63,14 +64,18 @@ public class HttpClient {
                     }
                 }
             });
+
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
             //初始化请求头（满足ip变更后统一修改的需求）
             OkHttpClient.Builder httpClientBuiler = RetrofitUrlManager.getInstance().with(new OkHttpClient.Builder());
             //对所有请求添加请求头
             OkHttpClient.Builder builder = httpClientBuiler.connectTimeout(timeOut, TimeUnit.MILLISECONDS)//连接超时,30秒
                     .readTimeout(timeOut, TimeUnit.MILLISECONDS)//读取数据超时，30秒
                     .addInterceptor(new RequestParamInterceptor());//请求头添加上token
-            builder.addInterceptor(loggingInterceptor);
+            if (Constant.ISSUE) {
+                builder.addInterceptor(loggingInterceptor);
+            }
 
             serversApiTb = new Retrofit.Builder()
                     .client(httpClientBuiler.build())
@@ -90,25 +95,27 @@ public class HttpClient {
                     if (message.contains("trace-id")) {
                         LogUtils.e("返回结果: " + message);
                     }
-                    if ((message.contains("resultCode") && message.contains("resultMsg")) || (message.contains("code") && message.contains("msg"))) {
+                    if (message.startsWith("{")) {
                         // LogUtils.e("请求结果" + message);
                         LogUtils.e("请求结果" + message);
                     } else if (message.contains("-->") && message.contains("https://")) {
                         LogUtils.e("请求接口" + message);
-                    } else if (message.contains("{")) {
-                        LogUtils.e("请求参数" + message);
+                    } else if (message.contains("app_key")) {
+                        LogUtils.e("请求参数" + message.replace("&", "\n").replace("=", ":"));
                     }
                 }
             });
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
             //初始化请求头（满足ip变更后统一修改的需求）
             OkHttpClient.Builder httpClientBuiler = RetrofitUrlManager.getInstance().with(new OkHttpClient.Builder());
             //对所有请求添加请求头
             OkHttpClient.Builder builder = httpClientBuiler.connectTimeout(timeOut, TimeUnit.MILLISECONDS)//连接超时,30秒
                     .readTimeout(timeOut, TimeUnit.MILLISECONDS)//读取数据超时，30秒
                     .addInterceptor(new RequestParamInterceptor());//请求头添加上token
-            builder.addInterceptor(loggingInterceptor);
-
+            if (Constant.ISSUE) {
+                builder.addInterceptor(loggingInterceptor);
+            }
             serversApiJd = new Retrofit.Builder()
                     .client(httpClientBuiler.build())
                     .addConverterFactory(GsonConverterFactory.create())

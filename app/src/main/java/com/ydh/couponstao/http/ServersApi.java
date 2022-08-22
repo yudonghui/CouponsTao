@@ -50,6 +50,16 @@ public interface ServersApi {
     @POST("router/rest")
     Call<TbDetailEntity> getMaterailTbDetail(@FieldMap Map<String, Object> paramsMap);
 
+    //推广者-物料搜索 taobao.tbk.dg.material.optional
+    @FormUrlEncoded
+    @POST("router/rest")
+    Call<MaterialContentEntity> getMaterailOptional(@FieldMap Map<String, Object> paramsMap);
+
+    //公用-长链转短链
+    @FormUrlEncoded
+    @POST("router/rest")
+    Call<TbDetailEntity> getSpreadGet(@FieldMap Map<String, Object> paramsMap);
+
     //
     @FormUrlEncoded
     @POST("routerjson")

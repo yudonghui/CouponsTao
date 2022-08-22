@@ -4,7 +4,11 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
+    <color name="transparent">#00000000</color>
     <color name="color_theme">#00B6B9</color>
+    <color name="color_theme_96">#96E1E3</color>
+    <color name="color_theme_c0">#C0E8E1</color>
+
     <color name="color_white">#ffffff</color>
     <color name="color_black">#000000</color>
     <color name="color_gray_f1">#f1f1f1</color>

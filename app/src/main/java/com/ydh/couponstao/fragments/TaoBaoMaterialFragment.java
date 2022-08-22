@@ -31,6 +31,7 @@ import com.ydh.couponstao.TestActivity;
 import com.ydh.couponstao.activitys.TbDetailActivity;
 import com.ydh.couponstao.activitys.WebWiewActivity;
 import com.ydh.couponstao.common.CommonDialog;
+import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.common.SpaceItemDecoration;
 import com.ydh.couponstao.common.bases.BaseFragment;
 import com.ydh.couponstao.entitys.MaterialContentEntity;
@@ -121,13 +122,14 @@ public class TaoBaoMaterialFragment extends BaseFragment {
     private void initData() {
         TreeMap<String, Object> map = new TreeMap<>();
         map.put("method", "taobao.tbk.dg.optimus.material");
-        map.put("app_key", "28252696");
+        map.put("app_key", Constant.APP_KEY_TB);
         map.put("timestamp", DateFormtUtils.getCurrentDate(DateFormtUtils.YMD_HMS));
         map.put("sign_method", "md5");
         map.put("format", "json");
-        map.put("adzone_id", "109915700451");
+        map.put("adzone_id", Constant.ADZONE_ID);
         map.put("material_id", material_id);
         map.put("v", "2.0");
+        map.put("simplify", true);
         map.put("page_no", page_no);
         map.put("page_size", page_size);
         String sign = HttpMd5.buildSignTb(map);
@@ -141,7 +143,7 @@ public class TaoBaoMaterialFragment extends BaseFragment {
                 if (response != null && response.isSuccessful() && response.body() != null) {
                     ErrorEntity error_response = response.body().getError_response();
                     if (error_response == null) {
-                        List<MaterialEntity> map_data = response.body().getTbk_dg_optimus_material_response().getResult_list().getMap_data();
+                        List<MaterialEntity> map_data = response.body().getResult_list();
                         if (map_data != null && map_data.size() > 0) {
                             if (page_no == 1) {
                                 mMaterialList.clear();
@@ -186,35 +188,34 @@ public class TaoBaoMaterialFragment extends BaseFragment {
                 if (reserve_price > coupon_start_fee) {//商品价格大于优惠券要求的最低价格
                     mTvOriginPrice.setText(Html.fromHtml("&yen") + "" + reserve_price);
                     mTvOriginPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                    mTvPrice.setText(Html.fromHtml("&yen") + CommonUtil.getNnmber(reserve_price - coupon_amount));
+                    mTvOriginPrice.getPaint().setAntiAlias(true);
+                    mTvPrice.setText(Html.fromHtml("&yen") + Strings.getDecimalPointHandl(CommonUtil.getNnmber(reserve_price - coupon_amount)));
                     holder.setVisible(R.id.tv_coupon, true);
                     holder.setText(R.id.tv_coupon, "券" + coupon_amount);
                     holder.setText(R.id.tv_commission, "预估返" + CommonUtil.getNnmber((reserve_price - coupon_amount) * commission_rate / 100.0));
                 } else {
                     mTvOriginPrice.setVisibility(View.GONE);
                     holder.setVisible(R.id.tv_coupon, false);
-                    mTvPrice.setText(Html.fromHtml("&yen") + "" + CommonUtil.getNnmber(reserve_price));
+                    mTvPrice.setText(Html.fromHtml("&yen") + Strings.getDecimalPointHandl(CommonUtil.getNnmber(reserve_price)));
                     holder.setText(R.id.tv_commission, "预估返" + CommonUtil.getNnmber(reserve_price * commission_rate / 100.0));
                 }
                 holder.setText(R.id.tv_volume, Strings.getString(materialEntity.getVolume()) + "+人付款");
                 holder.setOnClickListener(R.id.ll_content, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                     /*   ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm1.setText(materialEntity.getCoupon_share_url());
-                        CommonUtil.showToast("复制成功");*/
-                /*        Bundle bundle = new Bundle();
-                        bundle.putString("url", "https:" + materialEntity.getCoupon_share_url());
-                        startActivity(WebWiewActivity.class, bundle);*/
-                        tpwdCreate(materialEntity, mTvPrice.getText().toString(), mTvOriginPrice.getText().toString());
-                    }
-                });
-                mIvPhoto.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("materialEntity", materialEntity);
-                        startActivity(TestActivity.class, bundle);
+                        startActivity(TbDetailActivity.class, bundle);
+                        //tpwdCreate(materialEntity, mTvPrice.getText().toString(), mTvOriginPrice.getText().toString());
+                    }
+                });
+                holder.setOnLongClickListener(R.id.tv_product_name, new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                        cm1.setText(materialEntity.getTitle());
+                        CommonUtil.showToast("复制成功");
+                        return false;
                     }
                 });
             }
@@ -232,7 +233,7 @@ public class TaoBaoMaterialFragment extends BaseFragment {
     private void tpwdCreate(MaterialEntity materialEntity, String price, String originPrice) {
         TreeMap<String, Object> map = new TreeMap<>();
         map.put("method", "taobao.tbk.tpwd.create");
-        map.put("app_key", "28252696");
+        map.put("app_key", Constant.APP_KEY_TB);
         map.put("timestamp", DateFormtUtils.getCurrentDate(DateFormtUtils.YMD_HMS));
         map.put("sign_method", "md5");
         map.put("format", "json");
@@ -286,53 +287,6 @@ public class TaoBaoMaterialFragment extends BaseFragment {
 
             @Override
             public void onFailure(Call<TbCodeEntity> call, Throwable t) {
-            }
-        });
-    }
-
-    /**
-     * 淘宝客-公用-长链转短链
-     */
-    private void spreadGet(String clickUrl) {
-        TreeMap<String, Object> map = new TreeMap<>();
-        map.put("method", "taobao.tbk.spread.get");
-        map.put("app_key", "28252696");
-        map.put("timestamp", DateFormtUtils.getCurrentDate(DateFormtUtils.YMD_HMS));
-        map.put("sign_method", "md5");
-        map.put("format", "json");
-        map.put("v", "2.0");
-        map.put("simplify", true);
-        map.put("url", clickUrl);
-        String sign = HttpMd5.buildSignTb(map);
-        map.put("sign", sign);
-        Call<MaterialContentEntity> call = HttpClient.getHttpApiTb().getMaterailTb(map);
-        mNetWorkList.add(call);
-        call.enqueue(new Callback<MaterialContentEntity>() {
-            @Override
-            public void onResponse(Call<MaterialContentEntity> call, Response<MaterialContentEntity> response) {
-                stopOver(refreshLayout);
-                if (response != null && response.isSuccessful() && response.body() != null) {
-                    ErrorEntity error_response = response.body().getError_response();
-                    if (error_response == null) {
-                        List<MaterialEntity> map_data = response.body().getTbk_dg_optimus_material_response().getResult_list().getMap_data();
-                        if (map_data != null && map_data.size() > 0) {
-                            if (page_no == 1) {
-                                mMaterialList.clear();
-                            }
-                            mMaterialList.addAll(map_data);
-                            mMaterialAdapter.notifyDataSetChanged();
-                        } else {
-                            CommonUtil.showToast("暂无数据");
-                        }
-                    } else {
-                        CommonUtil.showToast(MsgCode.getStrByCode(error_response.getCode()));
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MaterialContentEntity> call, Throwable t) {
-                stopOver(refreshLayout);
             }
         });
     }

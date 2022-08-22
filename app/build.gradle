@@ -67,4 +67,8 @@ dependencies {
     //万能适配器
     implementation 'com.zhy:base-rvadapter:3.0.3'
     api 'com.squareup.picasso:picasso:2.5.2'
+    //华为二维码扫描
+    implementation 'com.huawei.hms:scan:2.2.0.300'
+    //生成二维码
+    implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.3.7'
 }

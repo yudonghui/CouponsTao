@@ -58,7 +58,7 @@ public class MaterialEntity implements Serializable {
     private String reserve_price;//	商品信息-一口价
     private String seller_id;//	店铺信息-卖家id
     private String shop_title;//	店铺信息-店铺名称
-    private SmallImagesBean small_images;//商品信息-商品小图列表
+    private  List<String> small_images;//商品信息-商品小图列表
     private String sub_title;//商品子标题
     private String title;//	商品信息-商品标题
     private String user_type;//店铺信息-卖家类型，0表示淘宝，1表示天猫，3表示特价版
@@ -218,11 +218,19 @@ public class MaterialEntity implements Serializable {
         this.shop_title = shop_title;
     }
 
-    public SmallImagesBean getSmall_images() {
+    public String getCoupon_click_url() {
+        return coupon_click_url;
+    }
+
+    public void setCoupon_click_url(String coupon_click_url) {
+        this.coupon_click_url = coupon_click_url;
+    }
+
+    public List<String> getSmall_images() {
         return small_images;
     }
 
-    public void setSmall_images(SmallImagesBean small_images) {
+    public void setSmall_images(List<String> small_images) {
         this.small_images = small_images;
     }
 
@@ -274,15 +282,4 @@ public class MaterialEntity implements Serializable {
         this.zk_final_price = zk_final_price;
     }
 
-    public static class SmallImagesBean implements Serializable{
-        private List<String> string;
-
-        public List<String> getString() {
-            return string;
-        }
-
-        public void setString(List<String> string) {
-            this.string = string;
-        }
-    }
 }

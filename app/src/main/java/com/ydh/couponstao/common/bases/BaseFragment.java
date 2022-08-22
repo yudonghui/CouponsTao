@@ -96,6 +96,12 @@ public class BaseFragment extends Fragment {
         startActivity(intent);
     }
 
+    public void startActivityForResult(Class<?> clz, int requestCode) {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), clz);
+        startActivityForResult(intent, requestCode);
+    }
+
     protected void stopOver(SmartRefreshLayout mRefreshLayout) {
         if (mRefreshLayout != null) {
             mRefreshLayout.finishLoadMore();

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.ydh.couponstao.R;
+import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.common.bases.BaseFragment;
 import com.ydh.couponstao.http.BaseBack;
 import com.ydh.couponstao.http.BaseEntity;
@@ -43,7 +44,7 @@ public class JingDongFragment extends BaseFragment {
 
     public void requestData() {
         TreeMap<String, Object> map = new TreeMap<>();
-        map.put("app_key", "8724dd097e248b402993f9550b287e0d");
+        map.put("app_key", Constant.APP_KEY_JD);
         map.put("method", "jd.union.open.goods.jingfen.query");
         map.put("v", "1.0");
         map.put("sign_method", "md5");

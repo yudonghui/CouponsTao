@@ -3,30 +3,39 @@ package com.ydh.couponstao.common;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ydh.couponstao.R;
 import com.ydh.couponstao.interfaces.ViewInterface;
+import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.utils.Strings;
+import com.ydh.couponstao.utils.ZXingUtils;
 
 /**
  * Created by ydh on 2022/8/17
  */
 public class CommonDialog {
     public Dialog mHintDialog;
+    private ImageView mIvCode;
     private TextView mTvMessage;
     private TextView mTvMessage2;
     private TextView mTvLeft;
     private TextView mTvRight;
+    private Context mContext;
 
     public CommonDialog(Context mContext, Builder builder) {
+        this.mContext = mContext;
         mHintDialog = new Dialog(mContext, R.style.HintDialog);
         mHintDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         View view = View.inflate(mContext, R.layout.dialog_common, null);
+        mIvCode = (ImageView) view.findViewById(R.id.iv_code);
         mTvMessage = (TextView) view.findViewById(R.id.tv_message);
         mTvMessage2 = (TextView) view.findViewById(R.id.tv_message2);
         mTvLeft = view.findViewById(R.id.tv_left);
@@ -35,6 +44,12 @@ public class CommonDialog {
         mHintDialog.setContentView(view);
         mHintDialog.show();
         dissmissListener(builder);
+    }
+
+    public void setIvCode(String url) {
+        int resize = CommonUtil.dp2px(200);
+        Bitmap image = ZXingUtils.createImage(url, resize, resize, BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher));
+        mIvCode.setImageBitmap(image);
     }
 
     private void dissmissListener(final Builder builder) {

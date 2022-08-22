@@ -12,6 +12,12 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+        String str = "4566.00";
+        if (str.endsWith("00")) {
+            System.out.println("结果：" + str.substring(0, str.length() - 3));
+        }else {
+            System.out.println("结果：错误" );
+        }
+
     }
 }

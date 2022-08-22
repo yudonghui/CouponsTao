@@ -1,5 +1,6 @@
 package com.ydh.couponstao.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,24 +13,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ydh.couponstao.R;
+import com.ydh.couponstao.activitys.HWScanActivity;
+import com.ydh.couponstao.activitys.SearchTbActivity;
 import com.ydh.couponstao.activitys.TaoBaoActivity;
+import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.common.bases.BaseFragment;
 import com.ydh.couponstao.entitys.HomeEntity;
 import com.ydh.couponstao.entitys.MaterialContentEntity;
-import com.ydh.couponstao.entitys.MaterialEntity;
-import com.ydh.couponstao.http.BaseBack;
-import com.ydh.couponstao.http.BaseEntity;
-import com.ydh.couponstao.http.ErrorEntity;
 import com.ydh.couponstao.http.HttpClient;
-import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.utils.DateFormtUtils;
 import com.ydh.couponstao.utils.HttpMd5;
-import com.ydh.couponstao.utils.MsgCode;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeMap;
 
 import butterknife.BindView;
@@ -67,15 +64,28 @@ public class TaoBaoFragment extends BaseFragment {
         return view;
     }
 
-    @OnClick(R.id.tv_search)
-    public void onViewClicked() {
-        initData();
+    @OnClick({R.id.iv_scan, R.id.tv_hint, R.id.tv_search})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_scan:
+                startActivityForResult(HWScanActivity.class, Constant.REQUEST_CODE1);
+                break;
+            case R.id.tv_hint:
+                Bundle bundle = new Bundle();
+                startActivity(SearchTbActivity.class, bundle);
+                break;
+            case R.id.tv_search:
+                Bundle bundle2 = new Bundle();
+                bundle2.putString("searchContent", tvHint.getHint().toString());
+                startActivity(SearchTbActivity.class, bundle2);
+                break;
+        }
     }
 
     private void initData() {
         TreeMap<String, Object> map = new TreeMap<>();
         map.put("method", "taobao.tbk.spread.get");
-        map.put("app_key", "28252696");
+        map.put("app_key", Constant.APP_KEY_TB);
         map.put("timestamp", DateFormtUtils.getCurrentDate(DateFormtUtils.YMD_HMS));
         map.put("sign_method", "md5");
         map.put("format", "json");
@@ -85,7 +95,7 @@ public class TaoBaoFragment extends BaseFragment {
         TreeMap<String, Object> treeMap = new TreeMap<>();
         treeMap.put("url", "http://temai.taobao.com");
         requests.add(treeMap);
-        map.put("requests","[{\"url\":\"http://temai.taobao.com\"}]");
+        map.put("requests", "[{\"url\":\"http://temai.taobao.com\"}]");
         String sign = HttpMd5.buildSignTb(map);
         map.put("sign", sign);
         Call<MaterialContentEntity> call = HttpClient.getHttpApiTb().getMaterailTb(map);
@@ -130,5 +140,13 @@ public class TaoBaoFragment extends BaseFragment {
         rvHome.setAdapter(mCommonAdapter);
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constant.REQUEST_CODE1 && resultCode == Constant.RESULT_CODE1) {
+            Bundle bundle = new Bundle();
+            bundle.putString("searchContent",data.getStringExtra("result"));
+            startActivity(SearchTbActivity.class, bundle);
+        }
+    }
 }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ydh.couponstao.activitys.WebWiewActivity;
+import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.common.bases.BaseActivity;
 import com.ydh.couponstao.entitys.MaterialEntity;
 import com.ydh.couponstao.entitys.TbCodeEntity;
@@ -49,7 +50,7 @@ public class TestActivity extends BaseActivity {
     public void couponGet(View view) {
         TreeMap<String, Object> map = new TreeMap<>();
         map.put("method", "taobao.tbk.coupon.get");
-        map.put("app_key", "28252696");
+        map.put("app_key", Constant.APP_KEY_TB);
         map.put("timestamp", DateFormtUtils.getCurrentDate(DateFormtUtils.YMD_HMS));
         map.put("sign_method", "md5");
         map.put("format", "json");
@@ -82,7 +83,7 @@ public class TestActivity extends BaseActivity {
     public void infoGet(View view) {
         TreeMap<String, Object> map = new TreeMap<>();
         map.put("method", "taobao.tbk.item.info.get");
-        map.put("app_key", "28252696");
+        map.put("app_key", Constant.APP_KEY_TB);
         map.put("timestamp", DateFormtUtils.getCurrentDate(DateFormtUtils.YMD_HMS));
         map.put("sign_method", "md5");
         map.put("format", "json");
