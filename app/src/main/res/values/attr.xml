@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DashView">
+
+        <attr name="dv_orientation" format="integer" />
+        <attr name="dv_color" format="color" />
+        <attr name="dv_width" format="dimension" />
+        <attr name="dv_margin_left" format="dimension" />
+        <attr name="dv_margin_right" format="dimension" />
+        <attr name="dv_margin_top" format="dimension" />
+        <attr name="dv_margin_bottom" format="dimension" />
+    </declare-styleable>
+</resources>

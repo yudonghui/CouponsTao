@@ -65,7 +65,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:paddingLeft="5dp"
                     android:text="金银花"
                     android:textColor="@color/color_black"
                     android:textSize="16sp" />
@@ -80,9 +79,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:paddingLeft="5dp"
                         android:text="金银花"
-                        android:textColor="@color/color_black"
+                        android:textColor="@color/color_theme"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -95,61 +93,55 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_gradient_theme"
+                        android:orientation="vertical"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp">
+
+                        <TextView
+                            android:id="@+id/tv_coupon_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="￥143"
+                            android:textColor="@color/color_white"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="专享优惠券"
+                            android:textColor="@color/color_white"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
                         android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/shape_gradient_theme"
-                            android:orientation="vertical"
+                        <com.ydh.couponstao.views.DashView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignLeft="@+id/tv_buy"
+                            android:layout_alignParentRight="true"
+                            app:dv_color="@color/color_white"
+                            app:dv_width="1dp" />
+
+                        <TextView
+                            android:id="@+id/tv_buy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:gravity="center"
                             android:paddingLeft="20dp"
-                            android:paddingTop="15dp"
-                            android:paddingBottom="15dp">
-
-                            <TextView
-                                android:id="@+id/tv_coupon_money"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="￥143"
-                                android:textColor="@color/color_white"
-                                android:textSize="22sp" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="专享优惠券"
-                                android:textColor="@color/color_white"
-                                android:textSize="16sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/shape_theme_light_10"
-                            android:orientation="vertical"
-                            android:paddingLeft="20dp"
-                            android:paddingTop="15dp"
-                            android:paddingBottom="15dp">
-
-                            <TextView
-                                android:id="@+id/tv_commission"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="￥143"
-                                android:textColor="@color/color_theme"
-                                android:textSize="22sp" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="预估返现"
-                                android:textColor="@color/color_theme"
-                                android:textSize="16sp" />
-                        </LinearLayout>
+                            android:paddingRight="20dp"
+                            android:text="立即抢购"
+                            android:textColor="@color/color_white"
+                            android:textSize="22sp" />
                     </LinearLayout>
 
                     <ImageView
@@ -159,7 +151,8 @@
                         android:background="@drawable/shape_white_10"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:src="@mipmap/add_theme_icon" />
+                        android:src="@mipmap/add_theme_icon"
+                        android:visibility="gone" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -233,5 +226,39 @@
             android:padding="8dp"
             android:src="@mipmap/share_white_icon" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_theme_light_10"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp">
+
+            <TextView
+                android:id="@+id/tv_commission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="￥143"
+                android:textColor="@color/color_theme"
+                android:textSize="22sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="预估返现"
+                android:textColor="@color/color_theme"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
 
 </FrameLayout>

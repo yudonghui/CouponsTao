@@ -22,6 +22,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ydh.couponstao.R;
+import com.ydh.couponstao.adapter.MaterialFormAdapter;
 import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.common.SpaceItemDecoration;
 import com.ydh.couponstao.common.bases.BaseActivity;
@@ -117,55 +118,7 @@ public class SearchTbActivity extends BaseActivity {
     }
 
     private void initAdapter() {
-        mMaterialAdapter = new CommonAdapter<MaterialEntity>(mContext, R.layout.item_tao_bao, mMaterialList) {
-
-            @Override
-            protected void convert(ViewHolder holder, MaterialEntity materialEntity, int position) {
-                ImageView mIvPhoto = holder.getView(R.id.iv_photo);
-                TextView mTvOriginPrice = holder.getView(R.id.tv_origin_price);
-                TextView mTvPrice = holder.getView(R.id.tv_price);
-                PicassoUtils.setNetImg(materialEntity.getPict_url(), mContext, mIvPhoto);
-                holder.setText(R.id.tv_product_name, Strings.getString(materialEntity.getTitle()));
-                double reserve_price = Strings.getDouble(materialEntity.getReserve_price());
-                double coupon_start_fee = Strings.getDouble(materialEntity.getCoupon_start_fee());
-                int coupon_amount = Strings.getInt(materialEntity.getCoupon_amount());
-                double commission_rate = Strings.getDouble(materialEntity.getCommission_rate());
-                if (reserve_price > coupon_start_fee) {//商品价格大于优惠券要求的最低价格
-                    mTvOriginPrice.setText(Html.fromHtml("&yen") + "" + reserve_price);
-                    mTvOriginPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                    mTvOriginPrice.getPaint().setAntiAlias(true);
-                    mTvPrice.setText(Html.fromHtml("&yen") + Strings.getDecimalPointHandl(CommonUtil.getNnmber(reserve_price - coupon_amount)));
-                    holder.setVisible(R.id.tv_coupon, true);
-                    holder.setText(R.id.tv_coupon, "券" + coupon_amount);
-                    holder.setText(R.id.tv_commission, "预估返" + CommonUtil.getNnmber((reserve_price - coupon_amount) * commission_rate / 10000.0));
-                } else {
-                    mTvOriginPrice.setVisibility(View.GONE);
-                    holder.setVisible(R.id.tv_coupon, false);
-                    mTvPrice.setText(Html.fromHtml("&yen") + Strings.getDecimalPointHandl(CommonUtil.getNnmber(reserve_price)));
-                    holder.setText(R.id.tv_commission, "预估返" + CommonUtil.getNnmber(reserve_price * commission_rate / 10000.0));
-                }
-                holder.setText(R.id.tv_volume, Strings.getString(materialEntity.getVolume()) + "+人付款");
-                holder.setOnClickListener(R.id.ll_content, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Bundle bundle = new Bundle();
-                        materialEntity.setCommission_rate((commission_rate/100.0)+"");
-                        bundle.putSerializable("materialEntity", materialEntity);
-                        startActivity(TbDetailActivity.class, bundle);
-                        //tpwdCreate(materialEntity, mTvPrice.getText().toString(), mTvOriginPrice.getText().toString());
-                    }
-                });
-                holder.setOnLongClickListener(R.id.tv_product_name, new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm1.setText(materialEntity.getTitle());
-                        CommonUtil.showToast("复制成功");
-                        return false;
-                    }
-                });
-            }
-        };
+        mMaterialAdapter = new MaterialFormAdapter(mContext, R.layout.item_tao_bao, mMaterialList);
         rvMaterial.addItemDecoration(new SpaceItemDecoration(CommonUtil.dp2px(10), SpaceItemDecoration.GRIDLAYOUT));
         rvMaterial.setLayoutManager(new GridLayoutManager(mContext, 2));
         rvMaterial.setAdapter(mMaterialAdapter);

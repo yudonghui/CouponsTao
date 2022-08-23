@@ -7,7 +7,6 @@
         android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="5dp">
 
@@ -60,6 +59,7 @@
                 android:id="@+id/tv_commission"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginLeft="5dp"
                 android:background="@drawable/shape_theme_5"
                 android:paddingLeft="5dp"

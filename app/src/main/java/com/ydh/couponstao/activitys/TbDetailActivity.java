@@ -94,7 +94,7 @@ public class TbDetailActivity extends BaseActivity {
         infoGet();
     }
 
-    @OnClick({R.id.return_btn, R.id.tv_title, R.id.iv_share, R.id.tv_copy, R.id.tv_skip_tb})
+    @OnClick({R.id.return_btn, R.id.tv_title, R.id.iv_share, R.id.tv_copy, R.id.tv_skip_tb, R.id.tv_buy})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.return_btn:
@@ -115,6 +115,9 @@ public class TbDetailActivity extends BaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("url", "https:" + materialEntity.getCoupon_share_url());
                 startActivity(WebWiewActivity.class, bundle);
+                break;
+            case R.id.tv_buy://立即抢购
+                tpwdCreate();
                 break;
         }
     }
@@ -202,6 +205,56 @@ public class TbDetailActivity extends BaseActivity {
         tvBuyNum.setText(Strings.getString(materialEntity.getVolume()) + "人已购买");
         tvTitle.setText(Strings.getString(materialEntity.getTitle()));//商品名称
         tvShopTitle.setText(Strings.getString(materialEntity.getShop_title()));//店铺名称
+    }
+
+    /**
+     * 淘宝客-公用-淘口令生成
+     */
+    private void tpwdCreate() {
+        showLoadingDialog();
+        TreeMap<String, Object> map = new TreeMap<>();
+        map.put("method", "taobao.tbk.tpwd.create");
+        map.put("app_key", Constant.APP_KEY_TB);
+        map.put("timestamp", DateFormtUtils.getCurrentDate(DateFormtUtils.YMD_HMS));
+        map.put("sign_method", "md5");
+        map.put("format", "json");
+        map.put("v", "2.0");
+        map.put("simplify", true);
+        map.put("url", "https:" + materialEntity.getCoupon_share_url());
+        String sign = HttpMd5.buildSignTb(map);
+        map.put("sign", sign);
+        Call<TbCodeEntity> call = HttpClient.getHttpApiTb().getMaterailTbCode(map);
+        mNetWorkList.add(call);
+        call.enqueue(new Callback<TbCodeEntity>() {
+            @Override
+            public void onResponse(Call<TbCodeEntity> call, Response<TbCodeEntity> response) {
+                cancelLoadingDialog();
+                if (response != null && response.isSuccessful() && response.body() != null) {
+                    ErrorEntity error_response = response.body().getError_response();
+                    if (error_response == null) {
+                        TbCodeEntity.DataBean data = response.body().getData();
+                        if (data != null) {
+                            ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                            cm1.setText(data.getModel());
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.VIEW");
+                            intent.setClassName("com.taobao.taobao", "com.taobao.tao.welcome.Welcome");
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        } else {
+                            CommonUtil.showToast("暂无数据");
+                        }
+                    } else {
+                        CommonUtil.showToast(MsgCode.getStrByCode(error_response.getCode()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TbCodeEntity> call, Throwable t) {
+                cancelLoadingDialog();
+            }
+        });
     }
 
     /**
