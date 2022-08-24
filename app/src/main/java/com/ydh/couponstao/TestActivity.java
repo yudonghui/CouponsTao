@@ -2,6 +2,8 @@ package com.ydh.couponstao;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,12 +11,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ydh.couponstao.activitys.WebWiewActivity;
 import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.common.bases.BaseActivity;
+import com.ydh.couponstao.entitys.JdBaseEntity;
 import com.ydh.couponstao.entitys.MaterialEntity;
 import com.ydh.couponstao.entitys.TbCodeEntity;
 import com.ydh.couponstao.entitys.TbDetailEntity;
+import com.ydh.couponstao.entitys.UrlEntity;
+import com.ydh.couponstao.http.BaseBack;
+import com.ydh.couponstao.http.BaseEntity;
 import com.ydh.couponstao.http.ErrorEntity;
 import com.ydh.couponstao.http.HttpClient;
 import com.ydh.couponstao.utils.CommonUtil;
@@ -22,11 +30,14 @@ import com.ydh.couponstao.utils.DateFormtUtils;
 import com.ydh.couponstao.utils.HttpMd5;
 import com.ydh.couponstao.utils.MsgCode;
 
+import org.json.JSONObject;
+
 import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,6 +50,7 @@ public class TestActivity extends BaseActivity {
     @BindView(R.id.tv_right)
     TextView tvRight;
     private MaterialEntity materialEntity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +127,40 @@ public class TestActivity extends BaseActivity {
         });
     }
 
+    public void jdMaterialQurey(View view) {
+        TreeMap<String, Object> map = new TreeMap<>();
+        map.put("app_key", Constant.APP_KEY_JD);
+        map.put("method", "jd.union.open.goods.material.query");
+        map.put("v", "1.0");
+        map.put("sign_method", "md5");
+        map.put("format", "json");
+        TreeMap<String, Object> buy_param_json = new TreeMap<>();
+        TreeMap<String, Object> goodsReq = new TreeMap<>();
+        goodsReq.put("eliteId", "22");
+        buy_param_json.put("goodsReq", goodsReq);
+        map.put("360buy_param_json", new Gson().toJson(buy_param_json));
+        map.put("eliteId", "22");
+        map.put("pageIndex", "1");
+        map.put("pageSize", "10");
+        map.put("timestamp", DateFormtUtils.getCurrentDate(DateFormtUtils.YMD_HMS));
+        String sign = HttpMd5.buildSignJd(map);
+        map.put("sign", sign);
+        // LogUtils.e("请求参数：",map.);
+        Call<ResponseBody> call = HttpClient.getHttpApiJd().getMaterailJd(map);
+        mNetWorkList.add(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
     @OnClick({R.id.return_btn, R.id.tv_right})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -127,5 +173,98 @@ public class TestActivity extends BaseActivity {
                 startActivity(intentWx);
                 break;
         }
+    }
+
+    public void commonGet(View view) {
+        TreeMap<String, Object> map = new TreeMap<>();
+        map.put("app_key", Constant.APP_KEY_JD);
+        map.put("method", HttpClient.JD_COMMON_GET);
+        map.put("v", "1.0");
+        map.put("sign_method", "md5");
+        map.put("format", "json");
+        map.put("timestamp", DateFormtUtils.getCurrentDate(DateFormtUtils.YMD_HMS));
+
+        TreeMap<String, Object> buy_param_json = new TreeMap<>();
+        TreeMap<String, Object> promotionCodeReq = new TreeMap<>();
+        //promotionCodeReq.put("materialId", materialEntity.getMaterialUrl());
+        promotionCodeReq.put("materialId", "item.jd.com/10026248467776.html");
+        promotionCodeReq.put("siteId", Constant.APP_ID);
+        buy_param_json.put("promotionCodeReq", promotionCodeReq);
+        map.put("360buy_param_json", new Gson().toJson(buy_param_json));
+
+        String sign = HttpMd5.buildSignJd(map);
+        map.put("sign", sign);
+        // LogUtils.e("请求参数：",map.);
+        Call<ResponseBody> call = HttpClient.getHttpApiJd().getMaterailJd(map);
+        mNetWorkList.add(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response != null && response.isSuccessful() && response.body() != null) {
+                    try {
+                        String body = response.body().string();
+                        JSONObject jsonObject = new JSONObject(body);
+                        if (!body.contains("error_response")) {
+                            JSONObject jd_union_open_promotion_common_get_responce = jsonObject.getJSONObject("jd_union_open_promotion_common_get_responce");
+                            String code = jd_union_open_promotion_common_get_responce.getString("code");
+                            String getResult = jd_union_open_promotion_common_get_responce.getString("getResult");
+
+                            JdBaseEntity<UrlEntity> jdBaseEntity = new Gson().fromJson(getResult, new TypeToken<JdBaseEntity<UrlEntity>>() {
+                            }.getType());
+
+                            String clickURL = jdBaseEntity.getData().getClickURL();
+                            ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                            cm1.setText(clickURL);
+                            CommonUtil.showToast("复制成功");
+                        } else {
+                            JSONObject error_response = jsonObject.getJSONObject("error_response");
+                            String code = error_response.getString("code");
+                            String zh_desc = error_response.getString("zh_desc");
+                            CommonUtil.showToast(zh_desc + "");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            }
+        });
+    }
+
+    public void clickExtract(View view) {
+        TreeMap<String, Object> map = new TreeMap<>();
+        map.put("method", "taobao.tbk.item.click.extract");
+        map.put("app_key", Constant.APP_KEY_TB);
+        map.put("timestamp", DateFormtUtils.getCurrentDate(DateFormtUtils.YMD_HMS));
+        map.put("sign_method", "md5");
+        map.put("format", "json");
+        map.put("v", "2.0");
+        map.put("simplify", true);
+        map.put("click_url", "https://m.tb.cn/h.U0tQoc3?tk=UusL2uSA1W7");
+        String sign = HttpMd5.buildSignTb(map);
+        map.put("sign", sign);
+        Call<TbCodeEntity> call = HttpClient.getHttpApiTb().getMaterailTbCode(map);
+        mNetWorkList.add(call);
+        call.enqueue(new Callback<TbCodeEntity>() {
+            @Override
+            public void onResponse(Call<TbCodeEntity> call, Response<TbCodeEntity> response) {
+                if (response != null && response.isSuccessful() && response.body() != null) {
+                    ErrorEntity error_response = response.body().getError_response();
+                    if (error_response == null) {
+
+                    } else {
+                        CommonUtil.showToast(MsgCode.getStrByCode(error_response.getCode()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TbCodeEntity> call, Throwable t) {
+            }
+        });
     }
 }

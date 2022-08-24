@@ -52,4 +52,28 @@
         android:layout_height="wrap_content"
         android:onClick="infoGet"
         android:text="淘宝客-公用-淘宝客商品详情查询(简版)" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="clickExtract"
+        android:text=" 淘宝客-公用-链接解析出商品id" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="jdMaterialQurey"
+        android:text="京东-猜你喜欢商品推荐" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="commonGet"
+        android:text="京东-网站/APP获取推广链接" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="commonGet"
+        android:text="京东-社交媒体获取推广链接" />
 </LinearLayout>

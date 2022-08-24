@@ -1,6 +1,7 @@
 package com.ydh.couponstao.activitys;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,6 +36,8 @@ public class TaoBaoActivity extends BaseActivity {
     ImageView returnBtn;
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    @BindView(R.id.iv_search)
+    ImageView ivSearch;
     private int type;
     private ArrayList<Fragment> mFragmentList = new ArrayList<>();
     private List<TitleEntity> mTitleList;
@@ -67,8 +70,15 @@ public class TaoBaoActivity extends BaseActivity {
     }
 
 
-    @OnClick(R.id.return_btn)
-    public void onViewClicked() {
-        finish();
+    @OnClick({R.id.return_btn, R.id.iv_search})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.return_btn:
+                finish();
+                break;
+            case R.id.iv_search:
+                startActivity(SearchTbActivity.class);
+                break;
+        }
     }
 }

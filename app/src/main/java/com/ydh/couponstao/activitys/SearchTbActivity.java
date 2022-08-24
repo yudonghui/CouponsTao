@@ -140,6 +140,7 @@ public class SearchTbActivity extends BaseActivity {
         map.put("simplify", true);
         map.put("page_no", page_no);
         map.put("page_size", page_size);
+       // map.put("material_id", "17004");
         String sign = HttpMd5.buildSignTb(map);
         map.put("sign", sign);
         Call<MaterialContentEntity> call = HttpClient.getHttpApiTb().getMaterailOptional(map);

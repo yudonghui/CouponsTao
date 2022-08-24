@@ -34,9 +34,11 @@ public class MaterialFormAdapter extends CommonAdapter<MaterialEntity> {
         ImageView mIvPhoto = holder.getView(R.id.iv_photo);
         TextView mTvOriginPrice = holder.getView(R.id.tv_origin_price);
         TextView mTvPrice = holder.getView(R.id.tv_price);
+        TextView mTvProductName = holder.getView(R.id.tv_product_name);
         String pict_url = materialEntity.getPict_url();
         PicassoUtils.setNetImg(pict_url.startsWith("http") ? pict_url : ("https:" + pict_url), mContext, mIvPhoto);
         holder.setText(R.id.tv_product_name, Strings.getString(materialEntity.getTitle()));
+        holder.setText(R.id.tv_shop_name, Strings.getString(materialEntity.getShop_title()));
         double reserve_price = Strings.getDouble(materialEntity.getReserve_price());
         double coupon_start_fee = Strings.getDouble(materialEntity.getCoupon_start_fee());
         int coupon_amount = Strings.getInt(materialEntity.getCoupon_amount());
@@ -68,7 +70,8 @@ public class MaterialFormAdapter extends CommonAdapter<MaterialEntity> {
                 //tpwdCreate(materialEntity, mTvPrice.getText().toString(), mTvOriginPrice.getText().toString());
             }
         });
-        holder.setOnLongClickListener(R.id.tv_product_name, new View.OnLongClickListener() {
+
+        mTvProductName.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);

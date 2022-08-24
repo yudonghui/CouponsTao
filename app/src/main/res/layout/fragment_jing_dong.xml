@@ -5,42 +5,51 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/shape_theme_box_20">
+        android:layout_height="45dp"
+        android:background="@color/color_theme">
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="京东"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="10dp"
-            android:src="@mipmap/search_gray_icon" />
-
-        <TextView
-            android:id="@+id/tv_hint"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:hint="京东衣服"
-            android:textColorHint="@color/color_gray_hint" />
-
-        <TextView
+            android:id="@+id/iv_search"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginTop="3dp"
-            android:layout_marginRight="3dp"
-            android:layout_marginBottom="3dp"
-            android:background="@drawable/shape_theme_20"
-            android:gravity="center"
+            android:layout_alignParentRight="true"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="搜索"
-            android:textColor="@color/color_white" />
-    </LinearLayout>
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:src="@mipmap/search_white_icon" />
 
+    </RelativeLayout>
+
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/color_white"
+        app:tabIndicatorColor="@color/color_theme"
+        app:tabIndicatorHeight="2dp"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/color_theme"
+        app:tabTextAppearance="@style/tablayout_text_14"
+        app:tabTextColor="@color/color_black" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp" />
 
 </LinearLayout>

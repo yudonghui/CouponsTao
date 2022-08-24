@@ -1,4 +1,4 @@
-package com.ydh.couponstao;
+package com.ydh.couponstao.activitys;
 
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -12,21 +12,14 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.blankj.utilcode.util.FragmentUtils;
+import com.ydh.couponstao.R;
 import com.ydh.couponstao.common.bases.BaseActivity;
 import com.ydh.couponstao.fragments.JingDongFragment;
 import com.ydh.couponstao.fragments.TaoBaoFragment;
-import com.ydh.couponstao.http.BaseBack;
-import com.ydh.couponstao.http.BaseEntity;
-import com.ydh.couponstao.http.HttpClient;
-import com.ydh.couponstao.utils.DateFormtUtils;
-import com.ydh.couponstao.utils.HttpMd5;
-
-import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Call;
 
 public class MainActivity extends BaseActivity {
 

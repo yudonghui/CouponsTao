@@ -31,6 +31,7 @@ public class Constant {
      */
     public final static String APP_KEY_JD = "8724dd097e248b402993f9550b287e0d";//京东
     public final static String APP_SECRET_JD = "c7b290141c2145ba9d052a563b5a03b6";//密钥
+    public final static String APP_ID = "4100876757";//APP ID
 
     public final static String SIGN_METHOD_MD5 = "md5";
     public final static String SIGN_METHOD_HMAC = "hmac";

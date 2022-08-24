@@ -5,13 +5,42 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/color_theme">
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="淘宝"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:src="@mipmap/search_white_icon" />
+
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="15dp"
-        android:background="@drawable/shape_theme_box_20">
+        android:background="@drawable/shape_theme_box_20"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_scan"
@@ -24,8 +53,8 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:background="@color/color_gray_hint"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="10dp"
+            android:background="@color/color_gray_hint" />
 
         <TextView
             android:id="@+id/tv_hint"

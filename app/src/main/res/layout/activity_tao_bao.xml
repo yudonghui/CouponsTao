@@ -29,6 +29,16 @@
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:src="@mipmap/search_white_icon" />
     </RelativeLayout>
 
     <com.google.android.material.tabs.TabLayout

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ydh.couponstao.R;
+import com.ydh.couponstao.TestActivity;
 import com.ydh.couponstao.activitys.HWScanActivity;
 import com.ydh.couponstao.activitys.SearchTbActivity;
 import com.ydh.couponstao.activitys.TaoBaoActivity;
@@ -64,7 +65,7 @@ public class TaoBaoFragment extends BaseFragment {
         return view;
     }
 
-    @OnClick({R.id.iv_scan, R.id.tv_hint, R.id.tv_search})
+    @OnClick({R.id.iv_scan, R.id.tv_hint, R.id.tv_search, R.id.iv_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_scan:
@@ -79,39 +80,13 @@ public class TaoBaoFragment extends BaseFragment {
                 bundle2.putString("searchContent", tvHint.getHint().toString());
                 startActivity(SearchTbActivity.class, bundle2);
                 break;
+            case R.id.iv_search:
+                //startActivity(TestActivity.class);
+                startActivity(SearchTbActivity.class);
+                break;
         }
     }
 
-    private void initData() {
-        TreeMap<String, Object> map = new TreeMap<>();
-        map.put("method", "taobao.tbk.spread.get");
-        map.put("app_key", Constant.APP_KEY_TB);
-        map.put("timestamp", DateFormtUtils.getCurrentDate(DateFormtUtils.YMD_HMS));
-        map.put("sign_method", "md5");
-        map.put("format", "json");
-        map.put("adzone_id", "109915700451");
-        map.put("v", "2.0");
-        ArrayList<TreeMap<String, Object>> requests = new ArrayList<>();
-        TreeMap<String, Object> treeMap = new TreeMap<>();
-        treeMap.put("url", "http://temai.taobao.com");
-        requests.add(treeMap);
-        map.put("requests", "[{\"url\":\"http://temai.taobao.com\"}]");
-        String sign = HttpMd5.buildSignTb(map);
-        map.put("sign", sign);
-        Call<MaterialContentEntity> call = HttpClient.getHttpApiTb().getMaterailTb(map);
-        mNetWorkList.add(call);
-        call.enqueue(new Callback<MaterialContentEntity>() {
-            @Override
-            public void onResponse(Call<MaterialContentEntity> call, Response<MaterialContentEntity> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<MaterialContentEntity> call, Throwable t) {
-            }
-        });
-
-    }
 
     private void initAdapter() {
         mHomeList.clear();
@@ -145,7 +120,7 @@ public class TaoBaoFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constant.REQUEST_CODE1 && resultCode == Constant.RESULT_CODE1) {
             Bundle bundle = new Bundle();
-            bundle.putString("searchContent",data.getStringExtra("result"));
+            bundle.putString("searchContent", data.getStringExtra("result"));
             startActivity(SearchTbActivity.class, bundle);
         }
     }

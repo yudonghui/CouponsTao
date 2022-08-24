@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -106,10 +107,10 @@ public class TbDetailActivity extends BaseActivity {
                 CommonUtil.showToast("复制成功");
                 break;
             case R.id.iv_share:
-                tpwdCreate(2);
+                tpwdCreate(2);//推广链接(click_url) 转淘口令 复制口令 跳转微信
                 break;
-            case R.id.tv_copy:
-                tpwdCreate(1);
+            case R.id.tv_copy://复制
+                tpwdCreate(1);//推广链接(click_url) 转淘口令 弹窗展示 二维码（coupon_share_url转短连）复制口令或者复制口令并跳转淘宝
                 break;
             case R.id.tv_skip_tb:
                 Bundle bundle = new Bundle();
@@ -117,7 +118,7 @@ public class TbDetailActivity extends BaseActivity {
                 startActivity(WebWiewActivity.class, bundle);
                 break;
             case R.id.tv_buy://立即抢购
-                tpwdCreate();
+                tpwdCreate();//领券链接(coupon_share_url) 转淘口令 复制淘口令 然后跳转淘宝
                 break;
         }
     }
@@ -129,6 +130,17 @@ public class TbDetailActivity extends BaseActivity {
             protected void convert(ViewHolder holder, String s, int position) {
                 ImageView mIvPhoto = holder.getView(R.id.iv_photo);
                 PicassoUtils.setNetImg(s, mContext, mIvPhoto);
+                mIvPhoto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, PictureActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position", position);
+                        bundle.putSerializable("mUrlList", mImageUrlList);
+                        intent.putExtras(bundle);
+                        mContext.startActivity(intent);
+                    }
+                });
             }
         };
         LinearLayoutManager layout = new LinearLayoutManager(mContext) {
@@ -261,6 +273,7 @@ public class TbDetailActivity extends BaseActivity {
      * 淘宝客-公用-淘口令生成
      */
     private void tpwdCreate(int mode) {
+        showLoadingDialog();
         TreeMap<String, Object> map = new TreeMap<>();
         map.put("method", "taobao.tbk.tpwd.create");
         map.put("app_key", Constant.APP_KEY_TB);
@@ -269,7 +282,7 @@ public class TbDetailActivity extends BaseActivity {
         map.put("format", "json");
         map.put("v", "2.0");
         map.put("simplify", true);
-        map.put("url", "https:" + materialEntity.getClick_url());
+        map.put("url", "https:" + (TextUtils.isEmpty(materialEntity.getClick_url()) ? materialEntity.getCoupon_share_url() : materialEntity.getClick_url()));
         String sign = HttpMd5.buildSignTb(map);
         map.put("sign", sign);
         Call<TbCodeEntity> call = HttpClient.getHttpApiTb().getMaterailTbCode(map);
@@ -277,6 +290,7 @@ public class TbDetailActivity extends BaseActivity {
         call.enqueue(new Callback<TbCodeEntity>() {
             @Override
             public void onResponse(Call<TbCodeEntity> call, Response<TbCodeEntity> response) {
+                cancelLoadingDialog();
                 if (response != null && response.isSuccessful() && response.body() != null) {
                     ErrorEntity error_response = response.body().getError_response();
                     if (error_response == null) {
@@ -326,6 +340,7 @@ public class TbDetailActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<TbCodeEntity> call, Throwable t) {
+                cancelLoadingDialog();
             }
         });
     }

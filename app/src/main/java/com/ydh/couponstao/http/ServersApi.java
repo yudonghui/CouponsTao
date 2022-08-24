@@ -60,8 +60,8 @@ public interface ServersApi {
     @POST("router/rest")
     Call<TbDetailEntity> getSpreadGet(@FieldMap Map<String, Object> paramsMap);
 
-    //
+    //京粉精选商品查询接口
     @FormUrlEncoded
     @POST("routerjson")
-    Call<BaseEntity<Object>> getMaterailJd(@FieldMap Map<String, Object> paramsMap);
+    Call<ResponseBody> getMaterailJd(@FieldMap Map<String, Object> paramsMap);
 }
