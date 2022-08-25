@@ -33,61 +33,85 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/shape_theme_box_20"
-        android:visibility="gone">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_scan"
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:padding="10dp"
-            android:src="@mipmap/scan_theme" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/color_gray_hint" />
-
-        <TextView
-            android:id="@+id/tv_hint"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:hint="衣服"
-            android:textColorHint="@color/color_gray_hint" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_search"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="3dp"
-            android:layout_marginRight="3dp"
-            android:layout_marginBottom="3dp"
-            android:background="@drawable/shape_theme_20"
-            android:gravity="center"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="搜索"
-            android:textColor="@color/color_white" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/shape_white_10" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/shape_theme_box_20"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/iv_scan"
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        android:padding="10dp"
+                        android:src="@mipmap/scan_theme" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/color_gray_hint" />
+
+                    <TextView
+                        android:id="@+id/tv_hint"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:hint="衣服"
+                        android:textColorHint="@color/color_gray_hint" />
+
+                    <TextView
+                        android:id="@+id/tv_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginRight="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:background="@drawable/shape_theme_20"
+                        android:gravity="center"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="搜索"
+                        android:textColor="@color/color_white" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/shape_white_10" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_home_material"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
 
 </LinearLayout>

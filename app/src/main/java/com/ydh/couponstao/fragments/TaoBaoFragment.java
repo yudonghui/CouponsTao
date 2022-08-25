@@ -11,23 +11,34 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ydh.couponstao.R;
-import com.ydh.couponstao.TestActivity;
 import com.ydh.couponstao.activitys.HWScanActivity;
 import com.ydh.couponstao.activitys.SearchTbActivity;
 import com.ydh.couponstao.activitys.TaoBaoActivity;
+import com.ydh.couponstao.adapter.MaterialFormAdapter;
 import com.ydh.couponstao.common.Constant;
+import com.ydh.couponstao.common.SpaceItemDecoration;
 import com.ydh.couponstao.common.bases.BaseFragment;
 import com.ydh.couponstao.entitys.HomeEntity;
 import com.ydh.couponstao.entitys.MaterialContentEntity;
+import com.ydh.couponstao.entitys.MaterialEntity;
+import com.ydh.couponstao.http.ErrorEntity;
 import com.ydh.couponstao.http.HttpClient;
+import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.utils.DateFormtUtils;
 import com.ydh.couponstao.utils.HttpMd5;
+import com.ydh.couponstao.utils.MsgCode;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 
 import butterknife.BindView;
@@ -47,7 +58,15 @@ public class TaoBaoFragment extends BaseFragment {
     TextView tvSearch;
     @BindView(R.id.rv_home)
     RecyclerView rvHome;
+    @BindView(R.id.rv_home_material)
+    RecyclerView rvHomeMaterial;
+    @BindView(R.id.refresh_layout)
+    SmartRefreshLayout refreshLayout;
     private ArrayList<HomeEntity> mHomeList = new ArrayList<>();
+    private CommonAdapter<MaterialEntity> mMaterialAdapter;
+    private ArrayList<MaterialEntity> mMaterialList = new ArrayList<>();
+    private int page_no = 1;
+    private int page_size = 20;
 
     public static TaoBaoFragment newInstance() {
         Bundle args = new Bundle();
@@ -62,7 +81,26 @@ public class TaoBaoFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_tao_bao, container, false);
         unbinder = ButterKnife.bind(this, view);
         initAdapter();
+        initListener();
+        initData();
         return view;
+    }
+
+    private void initListener() {
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page_no = 1;
+                initData();
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page_no++;
+                initData();
+            }
+        });
     }
 
     @OnClick({R.id.iv_scan, R.id.tv_hint, R.id.tv_search, R.id.iv_search})
@@ -90,10 +128,10 @@ public class TaoBaoFragment extends BaseFragment {
 
     private void initAdapter() {
         mHomeList.clear();
-        mHomeList.add(new HomeEntity(R.mipmap.one, "高佣榜", 1));
-        mHomeList.add(new HomeEntity(R.mipmap.two, "好券直播", 2));
-        mHomeList.add(new HomeEntity(R.mipmap.three, "品牌券", 3));
         mHomeList.add(new HomeEntity(R.mipmap.three, "大额券", 4));
+        mHomeList.add(new HomeEntity(R.mipmap.two, "好券直播", 2));
+        mHomeList.add(new HomeEntity(R.mipmap.four, "品牌券", 3));
+        mHomeList.add(new HomeEntity(R.mipmap.one, "其他", 9));
         CommonAdapter<HomeEntity> mCommonAdapter = new CommonAdapter<HomeEntity>(mContext, R.layout.item_home, mHomeList) {
 
             @Override
@@ -111,8 +149,68 @@ public class TaoBaoFragment extends BaseFragment {
                 });
             }
         };
-        rvHome.setLayoutManager(new GridLayoutManager(mContext, 4));
+        rvHome.setLayoutManager(new GridLayoutManager(mContext, 4) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
         rvHome.setAdapter(mCommonAdapter);
+        mMaterialAdapter = new MaterialFormAdapter(mContext, R.layout.item_tao_bao, mMaterialList);
+        rvHomeMaterial.addItemDecoration(new SpaceItemDecoration(CommonUtil.dp2px(10), SpaceItemDecoration.STAGGEREDGRIDLAYOUT));
+        rvHomeMaterial.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        rvHomeMaterial.setAdapter(mMaterialAdapter);
+    }
+
+    private void initData() {
+        TreeMap<String, Object> map = new TreeMap<>();
+        map.put("method", "taobao.tbk.dg.optimus.material");
+        map.put("app_key", Constant.APP_KEY_TB);
+        map.put("timestamp", DateFormtUtils.getCurrentDate(DateFormtUtils.YMD_HMS));
+        map.put("sign_method", "md5");
+        map.put("format", "json");
+        map.put("adzone_id", Constant.ADZONE_ID);
+        map.put("material_id", "28026");
+        map.put("v", "2.0");
+        map.put("simplify", true);
+        map.put("page_no", page_no);
+        map.put("page_size", page_size);
+        String sign = HttpMd5.buildSignTb(map);
+        map.put("sign", sign);
+        Call<MaterialContentEntity> call = HttpClient.getHttpApiTb().getMaterailTb(map);
+        mNetWorkList.add(call);
+        call.enqueue(new Callback<MaterialContentEntity>() {
+            @Override
+            public void onResponse(Call<MaterialContentEntity> call, Response<MaterialContentEntity> response) {
+                stopOver(refreshLayout);
+                if (response != null && response.isSuccessful() && response.body() != null) {
+                    ErrorEntity error_response = response.body().getError_response();
+                    if (error_response == null) {
+                        List<MaterialEntity> map_data = response.body().getResult_list();
+                        if (map_data != null && map_data.size() > 0) {
+                            if (page_no == 1)
+                                mMaterialList.clear();
+                            mMaterialList.addAll(map_data);
+                            mMaterialAdapter.notifyDataSetChanged();
+                        } else {
+                            CommonUtil.showToast("暂无数据");
+                        }
+                    } else {
+                        CommonUtil.showToast(MsgCode.getStrByCode(error_response.getCode()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MaterialContentEntity> call, Throwable t) {
+                stopOver(refreshLayout);
+            }
+        });
     }
 
     @Override

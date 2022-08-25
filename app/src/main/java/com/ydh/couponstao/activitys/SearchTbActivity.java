@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -119,8 +120,8 @@ public class SearchTbActivity extends BaseActivity {
 
     private void initAdapter() {
         mMaterialAdapter = new MaterialFormAdapter(mContext, R.layout.item_tao_bao, mMaterialList);
-        rvMaterial.addItemDecoration(new SpaceItemDecoration(CommonUtil.dp2px(10), SpaceItemDecoration.GRIDLAYOUT));
-        rvMaterial.setLayoutManager(new GridLayoutManager(mContext, 2));
+        rvMaterial.addItemDecoration(new SpaceItemDecoration(CommonUtil.dp2px(10), SpaceItemDecoration.STAGGEREDGRIDLAYOUT));
+        rvMaterial.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         rvMaterial.setAdapter(mMaterialAdapter);
     }
 
@@ -137,10 +138,10 @@ public class SearchTbActivity extends BaseActivity {
         map.put("adzone_id", Constant.ADZONE_ID);
         map.put("v", "2.0");
         map.put("q", searchContent);
+        map.put("material_id", 2836);//17004
         map.put("simplify", true);
         map.put("page_no", page_no);
         map.put("page_size", page_size);
-       // map.put("material_id", "17004");
         String sign = HttpMd5.buildSignTb(map);
         map.put("sign", sign);
         Call<MaterialContentEntity> call = HttpClient.getHttpApiTb().getMaterailOptional(map);

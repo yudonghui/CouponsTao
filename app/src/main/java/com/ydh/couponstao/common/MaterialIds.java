@@ -12,7 +12,7 @@ public class MaterialIds {
     public static ArrayList<TitleEntity> getMaterial(int type) {
         ArrayList<TitleEntity> list = new ArrayList<>();
         switch (type) {
-            case 1:
+            case 1://高佣榜（）
                 list.add(new TitleEntity("13366", "综合"));
                 list.add(new TitleEntity("13367", "女装"));
                 list.add(new TitleEntity("13372", "男装"));
@@ -25,7 +25,7 @@ public class MaterialIds {
                 list.add(new TitleEntity("13375", "食品"));
                 list.add(new TitleEntity("13376", "运动户外"));
                 break;
-            case 2:
+            case 2://好券直播
                 list.add(new TitleEntity("3756", "综合"));
                 list.add(new TitleEntity("3767", "女装"));
                 list.add(new TitleEntity("3764", "男装"));
@@ -38,7 +38,7 @@ public class MaterialIds {
                 list.add(new TitleEntity("3761", "食品"));
                 list.add(new TitleEntity("3766", "运动户外"));
                 break;
-            case 3:
+            case 3://品牌券
                 list.add(new TitleEntity("3786", "综合"));
                 list.add(new TitleEntity("3788", "女装"));
                 list.add(new TitleEntity("3790", "男装"));
@@ -51,13 +51,40 @@ public class MaterialIds {
                 list.add(new TitleEntity("3791", "食品"));
                 list.add(new TitleEntity("3795", "运动户外"));
                 break;
-            case 4:
+            case 4://大额券
                 list.add(new TitleEntity("27446", "综合"));
                 list.add(new TitleEntity("27448", "女装"));
                 list.add(new TitleEntity("27451", "食品"));
                 list.add(new TitleEntity("27453", "美妆个护"));
                 list.add(new TitleEntity("27798", "家居家装"));
                 list.add(new TitleEntity("27454", "母婴"));
+                break;
+            case 5://特惠
+                list.add(new TitleEntity("4094", "特惠"));
+                break;
+            case 6://潮流范
+                list.add(new TitleEntity("4093", "潮流范"));
+                break;
+            case 7://母婴主题
+                list.add(new TitleEntity("4040", "备孕"));
+                list.add(new TitleEntity("4041", "0至6个月"));
+                list.add(new TitleEntity("4042", "7至12个月"));
+                list.add(new TitleEntity("4043", "1至3岁"));
+                list.add(new TitleEntity("4044", "4至6岁"));
+                list.add(new TitleEntity("4045", "7至12岁"));
+                break;
+            case 8://实时热销榜
+                list.add(new TitleEntity("28026", "综合"));
+                list.add(new TitleEntity("28027", "大快消"));
+                list.add(new TitleEntity("28028", "电器美家"));
+                list.add(new TitleEntity("28029", "大服饰"));
+                break;
+            case 9://
+                list.add(new TitleEntity("32366", "聚划算"));
+                list.add(new TitleEntity("31362", "天天特卖相关"));
+                list.add(new TitleEntity("27160", "天猫超市"));
+                list.add(new TitleEntity("34616", "淘抢购"));
+                list.add(new TitleEntity("4092", "有好货"));
                 break;
         }
         return list;

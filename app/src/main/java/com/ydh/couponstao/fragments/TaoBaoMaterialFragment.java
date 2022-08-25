@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -173,8 +174,8 @@ public class TaoBaoMaterialFragment extends BaseFragment {
      */
     private void initAdapter() {
         mMaterialAdapter = new MaterialFormAdapter(mContext, R.layout.item_tao_bao, mMaterialList);
-        rvMaterial.addItemDecoration(new SpaceItemDecoration(CommonUtil.dp2px(10), SpaceItemDecoration.GRIDLAYOUT));
-        rvMaterial.setLayoutManager(new GridLayoutManager(mContext, 2));
+        rvMaterial.addItemDecoration(new SpaceItemDecoration(CommonUtil.dp2px(10), SpaceItemDecoration.STAGGEREDGRIDLAYOUT));
+        rvMaterial.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         rvMaterial.setAdapter(mMaterialAdapter);
     }
 

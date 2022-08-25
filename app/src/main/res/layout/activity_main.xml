@@ -31,8 +31,8 @@
 
             <ImageView
                 android:id="@+id/iv_tao_bao"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
                 android:src="@mipmap/tao_bao_true" />
 
             <TextView
@@ -55,8 +55,8 @@
 
             <ImageView
                 android:id="@+id/iv_jing_dong"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
                 android:src="@mipmap/jing_dong_false" />
 
             <TextView

@@ -26,6 +26,9 @@ public class Constant {
     public final static String APP_KEY_TB = "33976106";//淘宝
     public final static String APP_SECRET_TB = "a617a035736f95becd2a9c8db14962cf";//密钥
     public final static String ADZONE_ID = "114443250154";//推广位
+   /*public final static String APP_SECRET_TB = "73aea5ebcbeedec91aa6ff10b3a8c416";//密钥(顾)
+    public final static String APP_KEY_TB = "28252696";//淘宝(顾)
+    public final static String ADZONE_ID = "109915700451";//推广位(顾)*/
     /**
      * 京东
      */
