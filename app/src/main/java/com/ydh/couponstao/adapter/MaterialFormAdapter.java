@@ -1,6 +1,5 @@
 package com.ydh.couponstao.adapter;
 
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 import com.ydh.couponstao.R;
 import com.ydh.couponstao.activitys.TbDetailActivity;
 import com.ydh.couponstao.entitys.MaterialEntity;
+import com.ydh.couponstao.utils.ClipboardUtils;
 import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.utils.PicassoUtils;
 import com.ydh.couponstao.utils.Strings;
@@ -87,9 +87,7 @@ public class MaterialFormAdapter extends CommonAdapter<MaterialEntity> {
         mTvProductName.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                cm1.setText(materialEntity.getTitle());
-                CommonUtil.showToast("复制成功");
+                ClipboardUtils.setClipboard(materialEntity.getTitle());
                 return false;
             }
         });

@@ -1,7 +1,6 @@
 package com.ydh.couponstao.fragments;
 
 import android.app.PendingIntent;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -44,6 +43,7 @@ import com.ydh.couponstao.http.BaseEntity;
 import com.ydh.couponstao.http.ErrorEntity;
 import com.ydh.couponstao.http.HttpClient;
 import com.ydh.couponstao.interfaces.ViewInterface;
+import com.ydh.couponstao.utils.ClipboardUtils;
 import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.utils.DateFormtUtils;
 import com.ydh.couponstao.utils.HttpMd5;
@@ -170,7 +170,7 @@ public class TaoBaoMaterialFragment extends BaseFragment {
     }
 
     /**
-     * 备案名称与实际不一致;备案地址有误或不符合要求;备案类型与实际不一致;备案类型与实际不一致;
+     *
      */
     private void initAdapter() {
         mMaterialAdapter = new MaterialFormAdapter(mContext, R.layout.item_tao_bao, mMaterialList);
@@ -212,9 +212,7 @@ public class TaoBaoMaterialFragment extends BaseFragment {
                                     .leftBtn("复制文案", new ViewInterface() {
                                         @Override
                                         public void onClick(View view) {
-                                            ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                                            cm1.setText(data.getModel());
-                                            CommonUtil.showToast("复制成功");
+                                            ClipboardUtils.setClipboard(data.getModel());
                                             Intent intent = new Intent();
                                             intent.setAction("android.intent.action.VIEW");
                                             intent.setClassName("com.taobao.taobao", "com.taobao.tao.welcome.Welcome");

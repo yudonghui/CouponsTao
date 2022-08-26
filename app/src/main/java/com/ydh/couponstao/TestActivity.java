@@ -2,7 +2,6 @@ package com.ydh.couponstao;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -25,6 +24,7 @@ import com.ydh.couponstao.http.BaseBack;
 import com.ydh.couponstao.http.BaseEntity;
 import com.ydh.couponstao.http.ErrorEntity;
 import com.ydh.couponstao.http.HttpClient;
+import com.ydh.couponstao.utils.ClipboardUtils;
 import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.utils.DateFormtUtils;
 import com.ydh.couponstao.utils.HttpMd5;
@@ -213,9 +213,7 @@ public class TestActivity extends BaseActivity {
                             }.getType());
 
                             String clickURL = jdBaseEntity.getData().getClickURL();
-                            ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                            cm1.setText(clickURL);
-                            CommonUtil.showToast("复制成功");
+                            ClipboardUtils.setClipboard(clickURL);
                         } else {
                             JSONObject error_response = jsonObject.getJSONObject("error_response");
                             String code = error_response.getString("code");

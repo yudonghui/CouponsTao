@@ -1,6 +1,5 @@
 package com.ydh.couponstao.activitys;
 
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -8,18 +7,29 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
-import android.webkit.WebView;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jaeger.library.StatusBarUtil;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ydh.couponstao.R;
+import com.ydh.couponstao.adapter.MaterialJdAdapter;
 import com.ydh.couponstao.common.Constant;
+import com.ydh.couponstao.common.SpaceItemDecoration;
 import com.ydh.couponstao.common.bases.BaseActivity;
 import com.ydh.couponstao.entitys.CouponInfoEntity;
 import com.ydh.couponstao.entitys.ImageInfoContentEntity;
@@ -28,6 +38,7 @@ import com.ydh.couponstao.entitys.JdDetailEntity;
 import com.ydh.couponstao.entitys.JdMaterialEntity;
 import com.ydh.couponstao.entitys.UrlEntity;
 import com.ydh.couponstao.http.HttpClient;
+import com.ydh.couponstao.utils.ClipboardUtils;
 import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.utils.DateFormtUtils;
 import com.ydh.couponstao.utils.HttpMd5;
@@ -38,6 +49,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,8 +65,6 @@ import retrofit2.Response;
 
 public class JdDetailActivity extends BaseActivity {
 
-    @BindView(R.id.iv_pict)
-    ImageView ivPict;
     @BindView(R.id.tv_price)
     TextView tvPrice;
     @BindView(R.id.tv_origin_price)
@@ -67,8 +77,6 @@ public class JdDetailActivity extends BaseActivity {
     TextView tvShopTitle;
     @BindView(R.id.tv_coupon_money)
     TextView tvCouponMoney;
-    @BindView(R.id.rv_shop_pic)
-    RecyclerView rvShopPic;
     @BindView(R.id.tv_skip_jd)
     TextView tvSkipJd;
     @BindView(R.id.return_btn)
@@ -81,19 +89,30 @@ public class JdDetailActivity extends BaseActivity {
     TextView tvCommission;
     @BindView(R.id.tv_skip_web)
     TextView tvSkipWeb;
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
+    @BindView(R.id.tv_num)
+    TextView tvNum;
+    @BindView(R.id.rv_material)
+    RecyclerView rvMaterial;
+    @BindView(R.id.refresh_layout)
+    SmartRefreshLayout refreshLayout;
     private JdMaterialEntity materialEntity;
-    private CommonAdapter<String> mImageAdapter;
-    private ArrayList<String> mImageUrlList = new ArrayList<>();
+    private List<ImageView> mLists = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setStatusBarColor(false);
+        StatusBarUtil.setTransparent(this);
         setContentView(R.layout.activity_jd_detail);
         unBind = ButterKnife.bind(this);
         materialEntity = (JdMaterialEntity) getIntent().getSerializableExtra("materialEntity");
         initView();
         initAdapter();
         initDetailData();
+        initData();
+        initListener();
     }
 
     @OnClick({R.id.return_btn, R.id.tv_title, R.id.iv_share, R.id.tv_skip_jd, R.id.tv_skip_web})
@@ -103,9 +122,7 @@ public class JdDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_title:
-                ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                cm1.setText(materialEntity.getSkuName());
-                CommonUtil.showToast("复制成功");
+                ClipboardUtils.setClipboard(materialEntity.getSkuName());
                 break;
             case R.id.iv_share:
                 getCommonGet(1);//获取推广链接 复制 打开微信
@@ -131,6 +148,42 @@ public class JdDetailActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    int curPosition = 0;
+
+    private void initListener() {
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                pageIndex = 1;
+                initData();
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                pageIndex++;
+                initData();
+            }
+        });
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                curPosition = i;
+                tvNum.setText((curPosition + 1) + "/" + mLists.size());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 
     private void initView() {
@@ -164,47 +217,78 @@ public class JdDetailActivity extends BaseActivity {
     }
 
     private void initAdapter() {
-        mImageAdapter = new CommonAdapter<String>(mContext, R.layout.item_image_view, mImageUrlList) {
+        mMaterialAdapter = new MaterialJdAdapter(mContext, R.layout.item_jing_dong, mMaterialList);
+        rvMaterial.addItemDecoration(new SpaceItemDecoration(CommonUtil.dp2px(10), SpaceItemDecoration.STAGGEREDGRIDLAYOUT));
+        rvMaterial.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        rvMaterial.setAdapter(mMaterialAdapter);
+    }
+
+    /**
+     *
+     */
+    private void initViewPageAdapter(List<String> mImageUrlList) {
+        mLists.clear();
+        for (int i = 0; i < mImageUrlList.size(); i++) {
+            ImageView imageView = new ImageView(mContext);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            int finalI = i;
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, PictureActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("position", finalI);
+                    bundle.putSerializable("mUrlList", (Serializable) mImageUrlList);
+                    intent.putExtras(bundle);
+                    mContext.startActivity(intent);
+                }
+            });
+            PicassoUtils.setNetImg(mImageUrlList.get(i), mContext, imageView);
+            mLists.add(imageView);
+        }
+        PagerAdapter mPagerAdapter = new PagerAdapter() {
 
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
-                ImageView mIvPhoto = holder.getView(R.id.iv_photo);
-                PicassoUtils.setNetImg(s, mContext, mIvPhoto);
-                mIvPhoto.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(mContext, PictureActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("position", position);
-                        bundle.putSerializable("mUrlList", mImageUrlList);
-                        intent.putExtras(bundle);
-                        mContext.startActivity(intent);
-                    }
-                });
+            public int getCount() {
+                return mLists == null ? 0 : mLists.size();
             }
-        };
-        LinearLayoutManager layout = new LinearLayoutManager(mContext) {
+
             @Override
-            public boolean canScrollVertically() {
-                return false;
+            public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
+                return view == o;
+            }
+
+            @Override
+            public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+                container.removeView(mLists.get(position));
+            }
+
+            @NonNull
+            @Override
+            public Object instantiateItem(@NonNull ViewGroup container, int position) {
+                container.addView(mLists.get(position));
+                return mLists.get(position);
             }
         };
-        layout.setOrientation(LinearLayoutManager.VERTICAL);
-        rvShopPic.setLayoutManager(layout);
-        rvShopPic.setAdapter(mImageAdapter);
+        viewPager.setAdapter(mPagerAdapter);
     }
 
     private void initDetailView(JdDetailEntity jdDetailEntity) {
-
         if (jdDetailEntity.getImageInfo() != null && jdDetailEntity.getImageInfo().getImageList() != null && jdDetailEntity.getImageInfo().getImageList().size() > 0) {
-            PicassoUtils.setNetImg(jdDetailEntity.getImageInfo().getImageList().get(0).getUrl(), mContext, ivPict);
+            List<ImageInfoContentEntity.ImageInfoEntity> imageList = jdDetailEntity.getImageInfo().getImageList();
+            ArrayList<String> strings = new ArrayList<>();
+            for (int i = 0; i < imageList.size(); i++) {
+                strings.add(imageList.get(i).getUrl());
+            }
+            tvNum.setText(1 + "/" + strings.size());
+            initViewPageAdapter(strings);
+        } else {
+            String[] split = jdDetailEntity.getDetailImages().split(",");
+            if (split.length > 0) {
+                initViewPageAdapter(Arrays.asList(split));
+            }
+            tvNum.setText(1 + "/" + split.length);
         }
-        String[] split = jdDetailEntity.getDetailImages().split(",");
-        if (split.length > 0) {
-            mImageUrlList.clear();
-            mImageUrlList.addAll(Arrays.asList(split));
-        }
-        mImageAdapter.notifyDataSetChanged();
     }
 
     private void initDetailData() {
@@ -316,8 +400,7 @@ public class JdDetailActivity extends BaseActivity {
 
                             String clickURL = jdBaseEntity.getData().getClickURL();
                             if (type == 1) {
-                                ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                                cm1.setText(clickURL);
+                                ClipboardUtils.setClipboardNo(materialEntity.getSkuName());
                                 Uri uri = Uri.parse("weixin://");
                                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                                 startActivity(intent);
@@ -342,6 +425,73 @@ public class JdDetailActivity extends BaseActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 cancelLoadingDialog();
+            }
+        });
+    }
+
+    private int pageIndex = 1;
+    private int pageSize = 10;
+    private List<JdMaterialEntity> mMaterialList = new ArrayList<>();
+    private CommonAdapter<JdMaterialEntity> mMaterialAdapter;
+
+    public void initData() {
+        TreeMap<String, Object> map = new TreeMap<>();
+        map.put("app_key", Constant.APP_KEY_JD);
+        map.put("method", HttpClient.JD_MATERIAL_QUERY);
+        map.put("v", "1.0");
+        map.put("sign_method", "md5");
+        map.put("format", "json");
+        map.put("timestamp", DateFormtUtils.getCurrentDate(DateFormtUtils.YMD_HMS));
+
+        TreeMap<String, Object> buy_param_json = new TreeMap<>();
+        TreeMap<String, Object> goodsReq = new TreeMap<>();
+        goodsReq.put("eliteId", 1);
+        goodsReq.put("pageIndex", pageIndex);
+        goodsReq.put("pageSize", pageSize);
+        buy_param_json.put("goodsReq", goodsReq);
+        map.put("360buy_param_json", new Gson().toJson(buy_param_json));
+
+        String sign = HttpMd5.buildSignJd(map);
+        map.put("sign", sign);
+        // LogUtils.e("请求参数：",map.);
+        Call<ResponseBody> call = HttpClient.getHttpApiJd().getMaterailJd(map);
+        mNetWorkList.add(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                stopOver(refreshLayout);
+                if (response != null && response.isSuccessful() && response.body() != null) {
+                    try {
+                        String body = response.body().string();
+                        JSONObject jsonObject = new JSONObject(body);
+                        if (!body.contains("error_response")) {
+                            JSONObject jd_union_open_goods_jingfen_query_responce = jsonObject.getJSONObject("jd_union_open_goods_material_query_responce");
+                            String code = jd_union_open_goods_jingfen_query_responce.getString("code");
+                            String queryResult = jd_union_open_goods_jingfen_query_responce.getString("queryResult");
+                            JdBaseEntity<List<JdMaterialEntity>> jdBaseEntity = new Gson().fromJson(queryResult, new TypeToken<JdBaseEntity<List<JdMaterialEntity>>>() {
+                            }.getType());
+                            List<JdMaterialEntity> dataList = jdBaseEntity.getData();
+                            if (pageIndex == 1) mMaterialList.clear();
+                            if (dataList != null) {
+                                mMaterialList.addAll(dataList);
+                            }
+                            mMaterialAdapter.notifyDataSetChanged();
+                        } else {
+                            JSONObject error_response = jsonObject.getJSONObject("error_response");
+                            String code = error_response.getString("code");
+                            String zh_desc = error_response.getString("zh_desc");
+                            CommonUtil.showToast(zh_desc + "");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                stopOver(refreshLayout);
             }
         });
     }

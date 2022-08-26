@@ -1,6 +1,5 @@
 package com.ydh.couponstao.activitys;
 
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -138,7 +137,7 @@ public class SearchTbActivity extends BaseActivity {
         map.put("adzone_id", Constant.ADZONE_ID);
         map.put("v", "2.0");
         map.put("q", searchContent);
-        map.put("material_id", 2836);//17004
+        map.put("material_id", 17004);//默认2836， 佣金比较高6707，官方个性化算法优化17004
         map.put("simplify", true);
         map.put("page_no", page_no);
         map.put("page_size", page_size);

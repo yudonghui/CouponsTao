@@ -1,6 +1,5 @@
 package com.ydh.couponstao.activitys;
 
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -9,25 +8,37 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ydh.couponstao.R;
+import com.ydh.couponstao.adapter.MaterialFormAdapter;
 import com.ydh.couponstao.common.CommonDialog;
 import com.ydh.couponstao.common.Constant;
+import com.ydh.couponstao.common.SpaceItemDecoration;
 import com.ydh.couponstao.common.bases.BaseActivity;
+import com.ydh.couponstao.entitys.MaterialContentEntity;
 import com.ydh.couponstao.entitys.MaterialEntity;
 import com.ydh.couponstao.entitys.TbCodeEntity;
 import com.ydh.couponstao.entitys.TbDetailEntity;
 import com.ydh.couponstao.http.ErrorEntity;
 import com.ydh.couponstao.http.HttpClient;
 import com.ydh.couponstao.interfaces.ViewInterface;
+import com.ydh.couponstao.utils.ClipboardUtils;
 import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.utils.DateFormtUtils;
 import com.ydh.couponstao.utils.HttpMd5;
@@ -35,8 +46,8 @@ import com.ydh.couponstao.utils.MsgCode;
 import com.ydh.couponstao.utils.PicassoUtils;
 import com.ydh.couponstao.utils.Strings;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
@@ -55,8 +66,6 @@ public class TbDetailActivity extends BaseActivity {
     @BindView(R.id.tv_title)
     TextView tvTitle;
 
-    @BindView(R.id.iv_pict)
-    ImageView ivPict;
     @BindView(R.id.tv_price)
     TextView tvPrice;
     @BindView(R.id.tv_origin_price)
@@ -67,8 +76,6 @@ public class TbDetailActivity extends BaseActivity {
     TextView tvShopTitle;
     @BindView(R.id.tv_coupon_money)
     TextView tvCouponMoney;
-    @BindView(R.id.rv_shop_pic)
-    RecyclerView rvShopPic;
     @BindView(R.id.tv_skip_tb)
     TextView tvSkipTb;
     @BindView(R.id.tv_commission)
@@ -77,10 +84,23 @@ public class TbDetailActivity extends BaseActivity {
     RelativeLayout rlTitle;
     @BindView(R.id.iv_share)
     ImageView ivShare;
+    @BindView(R.id.tv_buy)
+    TextView tvBuy;
+    @BindView(R.id.rv_material)
+    RecyclerView rvMaterial;
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
+    @BindView(R.id.tv_num)
+    TextView tvNum;
+    @BindView(R.id.tv_copy)
+    TextView tvCopy;
+    @BindView(R.id.refresh_layout)
+    SmartRefreshLayout refreshLayout;
     private MaterialEntity materialEntity;
-    private ArrayList<String> mImageUrlList = new ArrayList<>();
-    private CommonAdapter<String> mImageAdapter;
     private CommonDialog mCommonDialog;
+    private CommonAdapter<MaterialEntity> mMaterialAdapter;
+    private ArrayList<MaterialEntity> mMaterialList = new ArrayList<>();
+    private List<ImageView> mLists = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +113,44 @@ public class TbDetailActivity extends BaseActivity {
         initView();
         initAdapter();
         infoGet();
+        initData();//
+        initListener();
+    }
+
+    int curPosition = 0;
+
+    private void initListener() {
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page_no = 1;
+                initData();
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page_no++;
+                initData();
+            }
+        });
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                curPosition = i;
+                tvNum.setText((curPosition + 1) + "/" + mLists.size());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 
     @OnClick({R.id.return_btn, R.id.tv_title, R.id.iv_share, R.id.tv_copy, R.id.tv_skip_tb, R.id.tv_buy})
@@ -102,9 +160,7 @@ public class TbDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_title:
-                ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                cm1.setText(materialEntity.getTitle());
-                CommonUtil.showToast("复制成功");
+                ClipboardUtils.setClipboard(materialEntity.getTitle());
                 break;
             case R.id.iv_share:
                 tpwdCreate(2);//推广链接(click_url) 转淘口令 复制口令 跳转微信
@@ -124,34 +180,65 @@ public class TbDetailActivity extends BaseActivity {
     }
 
     private void initAdapter() {
-        mImageAdapter = new CommonAdapter<String>(mContext, R.layout.item_image_view, mImageUrlList) {
-
-            @Override
-            protected void convert(ViewHolder holder, String s, int position) {
-                ImageView mIvPhoto = holder.getView(R.id.iv_photo);
-                PicassoUtils.setNetImg(s, mContext, mIvPhoto);
-                mIvPhoto.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(mContext, PictureActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("position", position);
-                        bundle.putSerializable("mUrlList", mImageUrlList);
-                        intent.putExtras(bundle);
-                        mContext.startActivity(intent);
-                    }
-                });
-            }
-        };
-        LinearLayoutManager layout = new LinearLayoutManager(mContext) {
+        mMaterialAdapter = new MaterialFormAdapter(mContext, R.layout.item_tao_bao, mMaterialList);
+        rvMaterial.addItemDecoration(new SpaceItemDecoration(CommonUtil.dp2px(10), SpaceItemDecoration.STAGGEREDGRIDLAYOUT));
+        rvMaterial.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL) {
             @Override
             public boolean canScrollVertically() {
                 return false;
             }
+        });
+        rvMaterial.setAdapter(mMaterialAdapter);
+    }
+
+    /**
+     *
+     */
+    private void initViewPageAdapter(List<String> mImageUrlList) {
+        mLists.clear();
+        for (int i = 0; i < mImageUrlList.size(); i++) {
+            ImageView imageView = new ImageView(mContext);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            int finalI = i;
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, PictureActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("position", finalI);
+                    bundle.putSerializable("mUrlList", (Serializable) mImageUrlList);
+                    intent.putExtras(bundle);
+                    mContext.startActivity(intent);
+                }
+            });
+            PicassoUtils.setNetImg(mImageUrlList.get(i), mContext, imageView);
+            mLists.add(imageView);
+        }
+        PagerAdapter mPagerAdapter = new PagerAdapter() {
+
+            @Override
+            public int getCount() {
+                return mLists == null ? 0 : mLists.size();
+            }
+
+            @Override
+            public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
+                return view == o;
+            }
+
+            @Override
+            public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+                container.removeView(mLists.get(position));
+            }
+
+            @NonNull
+            @Override
+            public Object instantiateItem(@NonNull ViewGroup container, int position) {
+                container.addView(mLists.get(position));
+                return mLists.get(position);
+            }
         };
-        layout.setOrientation(LinearLayoutManager.VERTICAL);
-        rvShopPic.setLayoutManager(layout);
-        rvShopPic.setAdapter(mImageAdapter);
+        viewPager.setAdapter(mPagerAdapter);
     }
 
     public void infoGet() {
@@ -177,13 +264,12 @@ public class TbDetailActivity extends BaseActivity {
                         if (response.body() != null && response.body().getResults() != null && response.body().getResults().size() > 0) {
                             TbDetailEntity.DataBean detailDataBean = response.body().getResults().get(0);
                             String pict_url = detailDataBean.getPict_url();
-                            PicassoUtils.setNetImg(pict_url, mContext, ivPict);
+                            //PicassoUtils.setNetImg(pict_url, mContext, ivPict);
                             List<String> small_images = detailDataBean.getSmall_images();
                             if (small_images != null) {
-                                mImageUrlList.clear();
-                                mImageUrlList.addAll(small_images);
+                                tvNum.setText(1 + "/" + small_images.size());
+                                initViewPageAdapter(small_images);
                             }
-                            mImageAdapter.notifyDataSetChanged();
                         }
                     } else {
                         CommonUtil.showToast(MsgCode.getStrByCode(error_response.getCode()));
@@ -246,8 +332,7 @@ public class TbDetailActivity extends BaseActivity {
                     if (error_response == null) {
                         TbCodeEntity.DataBean data = response.body().getData();
                         if (data != null) {
-                            ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                            cm1.setText(data.getModel());
+                            ClipboardUtils.setClipboardNo(data.getModel());
                             Intent intent = new Intent();
                             intent.setAction("android.intent.action.VIEW");
                             intent.setClassName("com.taobao.taobao", "com.taobao.tao.welcome.Welcome");
@@ -303,16 +388,13 @@ public class TbDetailActivity extends BaseActivity {
                                         .leftBtn("复制文案", new ViewInterface() {
                                             @Override
                                             public void onClick(View view) {
-                                                ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                                                cm1.setText(data.getModel());
-                                                CommonUtil.showToast("复制成功");
+                                                ClipboardUtils.setClipboard(data.getModel());
                                             }
                                         })
                                         .rightBtn("去淘宝", new ViewInterface() {
                                             @Override
                                             public void onClick(View view) {
-                                                ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                                                cm1.setText(data.getModel());
+                                                ClipboardUtils.setClipboardNo(data.getModel());
                                                 Intent intent = new Intent();
                                                 intent.setAction("android.intent.action.VIEW");
                                                 intent.setClassName("com.taobao.taobao", "com.taobao.tao.welcome.Welcome");
@@ -322,8 +404,7 @@ public class TbDetailActivity extends BaseActivity {
                                         }).build(mContext);
                                 spreadGet();
                             } else if (mode == 2) {
-                                ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                                cm1.setText(data.getModel());
+                                ClipboardUtils.setClipboardNo(data.getModel());
                                 Uri uri = Uri.parse("weixin://");
                                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                                 startActivity(intent);
@@ -389,5 +470,58 @@ public class TbDetailActivity extends BaseActivity {
 
             }
         });
+    }
+
+    private int page_no = 1;
+    private int page_size = 20;
+
+    //相似推荐
+    private void initData() {
+        TreeMap<String, Object> map = new TreeMap<>();
+        map.put("method", "taobao.tbk.dg.optimus.material");
+        map.put("app_key", Constant.APP_KEY_TB);
+        map.put("timestamp", DateFormtUtils.getCurrentDate(DateFormtUtils.YMD_HMS));
+        map.put("sign_method", "md5");
+        map.put("format", "json");
+        map.put("adzone_id", Constant.ADZONE_ID);
+        map.put("material_id", "13256");
+        map.put("item_id", materialEntity.getItem_id());
+        map.put("v", "2.0");
+        map.put("simplify", true);
+        map.put("page_no", page_no);
+        map.put("page_size", page_size);
+        String sign = HttpMd5.buildSignTb(map);
+        map.put("sign", sign);
+        Call<MaterialContentEntity> call = HttpClient.getHttpApiTb().getMaterailTb(map);
+        mNetWorkList.add(call);
+        call.enqueue(new Callback<MaterialContentEntity>() {
+            @Override
+            public void onResponse(Call<MaterialContentEntity> call, Response<MaterialContentEntity> response) {
+                stopOver(refreshLayout);
+                if (response != null && response.isSuccessful() && response.body() != null) {
+                    ErrorEntity error_response = response.body().getError_response();
+                    if (error_response == null) {
+                        List<MaterialEntity> map_data = response.body().getResult_list();
+                        if (map_data != null && map_data.size() > 0) {
+                            if (page_no == 1) {
+                                mMaterialList.clear();
+                            }
+                            mMaterialList.addAll(map_data);
+                            mMaterialAdapter.notifyDataSetChanged();
+                        } else {
+                            CommonUtil.showToast("暂无数据");
+                        }
+                    } else {
+                        CommonUtil.showToast(MsgCode.getStrByCode(error_response.getCode()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MaterialContentEntity> call, Throwable t) {
+                stopOver(refreshLayout);
+            }
+        });
+
     }
 }

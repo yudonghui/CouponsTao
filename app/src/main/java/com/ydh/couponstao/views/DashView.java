@@ -54,7 +54,7 @@ public class DashView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
         paint.setStrokeWidth(paintWidth);
-        paint.setPathEffect(new DashPathEffect(new float[]{6, 6}, 0));
+        paint.setPathEffect(new DashPathEffect(new float[]{6, 8}, 0));
     }
 
     @Override

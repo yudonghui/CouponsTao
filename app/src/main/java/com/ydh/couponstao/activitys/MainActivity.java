@@ -1,21 +1,30 @@
 package com.ydh.couponstao.activitys;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.blankj.utilcode.util.FragmentUtils;
+import com.blankj.utilcode.util.ObjectUtils;
 import com.ydh.couponstao.R;
+import com.ydh.couponstao.common.CommonDialog;
 import com.ydh.couponstao.common.bases.BaseActivity;
+import com.ydh.couponstao.dialogs.CheckCopyDialog;
 import com.ydh.couponstao.fragments.JingDongFragment;
 import com.ydh.couponstao.fragments.TaoBaoFragment;
+import com.ydh.couponstao.utils.ClipboardUtils;
+import com.ydh.couponstao.utils.CommonUtil;
+import com.ydh.couponstao.utils.LogUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +67,28 @@ public class MainActivity extends BaseActivity {
         mFragments[1] = JingDongFragment.newInstance();//京东fragment
     }
 
+
+    //对返回键进行监听
+    //退出时的时间
+    private long mExitTime;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            if ((System.currentTimeMillis() - mExitTime) > 1500) {
+                CommonUtil.showToast("再按一次离开券券淘");
+                mExitTime = System.currentTimeMillis();
+            } else {
+               /* finish();
+                System.exit(0);*/
+                return super.onKeyDown(keyCode, event);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     @OnClick({R.id.ll_tao_bao, R.id.ll_jing_dong})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -92,8 +123,6 @@ public class MainActivity extends BaseActivity {
         }
         FragmentUtils.showHide(curIndex = index, mFragments);
     }
-
-
 
 
 }

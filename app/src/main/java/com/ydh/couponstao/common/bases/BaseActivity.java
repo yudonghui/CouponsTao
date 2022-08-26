@@ -10,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.blankj.utilcode.util.ObjectUtils;
 import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ydh.couponstao.R;
@@ -35,6 +37,8 @@ import com.ydh.couponstao.common.permission.PermissionListener;
 import com.ydh.couponstao.common.permission.PermissionSetting;
 import com.ydh.couponstao.common.permission.PermissionUtils;
 import com.ydh.couponstao.common.permission.YuAlertDialog;
+import com.ydh.couponstao.dialogs.CheckCopyDialog;
+import com.ydh.couponstao.utils.ClipboardUtils;
 import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.utils.LogUtils;
 import com.ydh.couponstao.utils.SPUtils;
@@ -109,7 +113,21 @@ public class BaseActivity extends AppCompatActivity {
         }
 
     }
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        LogUtils.e("生命周期 onRestart");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                LogUtils.e("生命周期 子线程");
+                String clipboard = ClipboardUtils.getClipboard();
+                if (ObjectUtils.isNotEmpty(clipboard)) {
+                    new CheckCopyDialog(mContext).show(clipboard);
+                }
+            }
+        }, 1000);
+    }
     /**
      * 判断是否平板设备
      *

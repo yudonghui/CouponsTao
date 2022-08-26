@@ -12,6 +12,8 @@
     <color name="color_white">#ffffff</color>
     <color name="color_black">#000000</color>
     <color name="color_black_50">#333333</color>
+    <color name="color_black_alpha">#60000000</color>
+    <color name="color_black_al">#70000000</color>
     <color name="color_gray_f1">#f1f1f1</color>
     <color name="color_gray_70">#707070</color>
     <color name="color_gray_60">#858585</color>

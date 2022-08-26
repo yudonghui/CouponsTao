@@ -1,6 +1,5 @@
 package com.ydh.couponstao.adapter;
 
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -18,6 +17,7 @@ import com.ydh.couponstao.entitys.CouponInfoEntity;
 import com.ydh.couponstao.entitys.ImageInfoContentEntity;
 import com.ydh.couponstao.entitys.JdMaterialEntity;
 import com.ydh.couponstao.entitys.MaterialEntity;
+import com.ydh.couponstao.utils.ClipboardUtils;
 import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.utils.PicassoUtils;
 import com.ydh.couponstao.utils.Strings;
@@ -47,7 +47,7 @@ public class MaterialJdAdapter extends CommonAdapter<JdMaterialEntity> {
             mIvPhoto.setImageResource(0);
         }
         holder.setText(R.id.tv_product_name, Strings.getString(materialEntity.getSkuName()));//商品名称
-        holder.setText(R.id.tv_product_name, Strings.getString(materialEntity.getShopInfo().getShopName()));
+        holder.setText(R.id.tv_shop_name, Strings.getString(materialEntity.getShopInfo().getShopName()));
         JdMaterialEntity.CouponInfoContentEntity couponInfo = materialEntity.getCouponInfo();
         if (couponInfo != null && couponInfo.getCouponList() != null && couponInfo.getCouponList().size() > 0) {
             mTvCoupon.setVisibility(View.VISIBLE);
@@ -89,9 +89,7 @@ public class MaterialJdAdapter extends CommonAdapter<JdMaterialEntity> {
         holder.setOnLongClickListener(R.id.tv_product_name, new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                ClipboardManager cm1 = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                cm1.setText(materialEntity.getSkuName());
-                CommonUtil.showToast("复制成功");
+                ClipboardUtils.setClipboard(materialEntity.getSkuName());
                 return true;
             }
         });

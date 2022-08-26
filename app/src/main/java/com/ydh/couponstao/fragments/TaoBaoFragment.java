@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.blankj.utilcode.util.ObjectUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -25,11 +26,13 @@ import com.ydh.couponstao.adapter.MaterialFormAdapter;
 import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.common.SpaceItemDecoration;
 import com.ydh.couponstao.common.bases.BaseFragment;
+import com.ydh.couponstao.dialogs.CheckCopyDialog;
 import com.ydh.couponstao.entitys.HomeEntity;
 import com.ydh.couponstao.entitys.MaterialContentEntity;
 import com.ydh.couponstao.entitys.MaterialEntity;
 import com.ydh.couponstao.http.ErrorEntity;
 import com.ydh.couponstao.http.HttpClient;
+import com.ydh.couponstao.utils.ClipboardUtils;
 import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.utils.DateFormtUtils;
 import com.ydh.couponstao.utils.HttpMd5;
@@ -82,7 +85,7 @@ public class TaoBaoFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, view);
         initAdapter();
         initListener();
-        initData();
+        refreshLayout.autoRefresh();
         return view;
     }
 
@@ -175,7 +178,7 @@ public class TaoBaoFragment extends BaseFragment {
         map.put("sign_method", "md5");
         map.put("format", "json");
         map.put("adzone_id", Constant.ADZONE_ID);
-        map.put("material_id", "28026");
+        map.put("material_id", "28026");//实时热销榜-综合
         map.put("v", "2.0");
         map.put("simplify", true);
         map.put("page_no", page_no);

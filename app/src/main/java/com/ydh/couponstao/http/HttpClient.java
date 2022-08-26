@@ -39,6 +39,7 @@ public class HttpClient {
     public static String JD_COMMON_GET = "jd.union.open.promotion.common.get";//网站/APP获取推广链接
     public static String JD_MATERIAL_SEARCH = "jd.union.open.goods.query";//关键词商品查询接口
     public static String JD_MATERIAL_DETAIL = "jd.union.open.goods.bigfield.query";//商品详情
+    public static String JD_MATERIAL_QUERY = "jd.union.open.goods.material.query";//猜你喜欢商品推荐
 
     public static String getBaseUrl() {
         return "https://eco.taobao.com/";
