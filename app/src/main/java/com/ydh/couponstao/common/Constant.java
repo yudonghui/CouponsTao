@@ -9,7 +9,13 @@ public class Constant {
     /**
      * 测试标识
      */
-    public final static boolean ISSUE = true;//正式发布时请改成false
+    public final static boolean ISSUE = false;//正式发布时请改成false
+    /**
+     * 检测app是否需要更新
+     */
+    public final static String UPDATE_URL = "http://upgrade.app.mylikesh.cn/coupons/android/check";
+    //public final static String DOWNLOAD_URL = "http://upgrade.app.mylikesh.cn/coupons/android/coupons.apk";
+    public final static String DOWNLOAD_URL = "http://d.maps9.com/52f6";
     /**
      * 跳转
      */

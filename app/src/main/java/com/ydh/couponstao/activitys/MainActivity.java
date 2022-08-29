@@ -16,9 +16,13 @@ import androidx.fragment.app.Fragment;
 
 import com.blankj.utilcode.util.FragmentUtils;
 import com.blankj.utilcode.util.ObjectUtils;
+import com.xuexiang.xupdate.XUpdate;
 import com.ydh.couponstao.R;
 import com.ydh.couponstao.common.CommonDialog;
+import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.common.bases.BaseActivity;
+import com.ydh.couponstao.common.updateapp.CustomUpdateParser;
+import com.ydh.couponstao.common.updateapp.CustomUpdatePrompter;
 import com.ydh.couponstao.dialogs.CheckCopyDialog;
 import com.ydh.couponstao.fragments.JingDongFragment;
 import com.ydh.couponstao.fragments.TaoBaoFragment;
@@ -60,6 +64,16 @@ public class MainActivity extends BaseActivity {
         colorGray = ContextCompat.getColor(mContext, R.color.color_gray_60);
         setFragment();
         FragmentUtils.add(getSupportFragmentManager(), mFragments, R.id.content_fragment, curIndex);
+        //检查版本更新
+        checkUpdate();
+    }
+
+    private void checkUpdate() {
+        XUpdate.newBuild(this)
+                .updateUrl(Constant.UPDATE_URL)
+                .updateParser(new CustomUpdateParser())
+                .updatePrompter(new CustomUpdatePrompter(this))
+                .update();
     }
 
     private void setFragment() {

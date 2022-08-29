@@ -1,5 +1,7 @@
 package com.ydh.couponstao.fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +16,11 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.ydh.couponstao.R;
 import com.ydh.couponstao.adapter.FragmentAdapter;
+import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.common.MaterialIds;
 import com.ydh.couponstao.common.bases.BaseFragment;
 import com.ydh.couponstao.entitys.TitleEntity;
+import com.ydh.couponstao.utils.ClipboardUtils;
 import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.views.TablayoutTabView;
 
@@ -75,8 +79,11 @@ public class JingDongFragment extends BaseFragment {
     }
 
 
-    @OnClick(R.id.iv_search)
+    @OnClick(R.id.iv_share)
     public void onViewClicked() {
-        CommonUtil.showToast("开发中...");
+        ClipboardUtils.setClipboardNo(Constant.DOWNLOAD_URL);
+        Uri uriWx = Uri.parse("weixin://");
+        Intent intentWx = new Intent(Intent.ACTION_VIEW, uriWx);
+        startActivity(intentWx);
     }
 }

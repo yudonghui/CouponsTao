@@ -1,6 +1,7 @@
 package com.ydh.couponstao.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,9 +107,15 @@ public class TaoBaoFragment extends BaseFragment {
         });
     }
 
-    @OnClick({R.id.iv_scan, R.id.tv_hint, R.id.tv_search, R.id.iv_search})
+    @OnClick({R.id.iv_share,R.id.iv_scan, R.id.tv_hint, R.id.tv_search, R.id.iv_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_share:
+                ClipboardUtils.setClipboardNo(Constant.DOWNLOAD_URL);
+                Uri uriWx = Uri.parse("weixin://");
+                Intent intentWx = new Intent(Intent.ACTION_VIEW, uriWx);
+                startActivity(intentWx);
+                break;
             case R.id.iv_scan:
                 startActivityForResult(HWScanActivity.class, Constant.REQUEST_CODE1);
                 break;
