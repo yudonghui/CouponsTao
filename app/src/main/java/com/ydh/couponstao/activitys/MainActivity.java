@@ -23,12 +23,15 @@ import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.common.bases.BaseActivity;
 import com.ydh.couponstao.common.updateapp.CustomUpdateParser;
 import com.ydh.couponstao.common.updateapp.CustomUpdatePrompter;
+import com.ydh.couponstao.dialogs.AgreementDialog;
 import com.ydh.couponstao.dialogs.CheckCopyDialog;
 import com.ydh.couponstao.fragments.JingDongFragment;
 import com.ydh.couponstao.fragments.TaoBaoFragment;
+import com.ydh.couponstao.interfaces.ViewInterface;
 import com.ydh.couponstao.utils.ClipboardUtils;
 import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.utils.LogUtils;
+import com.ydh.couponstao.utils.SPUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,6 +69,15 @@ public class MainActivity extends BaseActivity {
         FragmentUtils.add(getSupportFragmentManager(), mFragments, R.id.content_fragment, curIndex);
         //检查版本更新
         checkUpdate();
+        if (!"1".equals(SPUtils.getCache(SPUtils.FILE_DATA, SPUtils.IS_FIRST))) {
+            new AgreementDialog(mContext, new ViewInterface() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                    System.exit(0);
+                }
+            });
+        }
     }
 
     private void checkUpdate() {
@@ -81,6 +93,10 @@ public class MainActivity extends BaseActivity {
         mFragments[1] = JingDongFragment.newInstance();//京东fragment
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     //对返回键进行监听
     //退出时的时间

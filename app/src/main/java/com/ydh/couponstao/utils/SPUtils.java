@@ -28,6 +28,9 @@ public class SPUtils {
     public static final String EMP_ID = "empId"; //咨询师ID
     public static final String USER_ID = "user_id"; //用户ID
     public static final String USER_NAME = "userName"; //咨询师姓名
+    //存储信息，除非卸载否则一直存在
+    public static final String FILE_DATA = "file_data";
+    public static final String IS_FIRST = "is_first"; //是否第一次打开
 
 
     /**
@@ -72,7 +75,6 @@ public class SPUtils {
         String spValue = sp.getString(spNaem, "");
         return spValue;
     }
-
 
 
     public static void clearCache(String fileName) {

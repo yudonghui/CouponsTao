@@ -9,7 +9,7 @@ public class Constant {
     /**
      * 测试标识
      */
-    public final static boolean ISSUE = false;//正式发布时请改成false
+    public final static boolean ISSUE = true;//正式发布时请改成false
     /**
      * 检测app是否需要更新
      */
