@@ -67,26 +67,8 @@ public class MainActivity extends BaseActivity {
         colorGray = ContextCompat.getColor(mContext, R.color.color_gray_60);
         setFragment();
         FragmentUtils.add(getSupportFragmentManager(), mFragments, R.id.content_fragment, curIndex);
-        //检查版本更新
-        checkUpdate();
-        if (!"1".equals(SPUtils.getCache(SPUtils.FILE_DATA, SPUtils.IS_FIRST))) {
-            new AgreementDialog(mContext, new ViewInterface() {
-                @Override
-                public void onClick(View view) {
-                    finish();
-                    System.exit(0);
-                }
-            });
-        }
     }
 
-    private void checkUpdate() {
-        XUpdate.newBuild(this)
-                .updateUrl(Constant.UPDATE_URL)
-                .updateParser(new CustomUpdateParser())
-                .updatePrompter(new CustomUpdatePrompter(this))
-                .update();
-    }
 
     private void setFragment() {
         mFragments[0] = TaoBaoFragment.newInstance();//淘宝fragment
@@ -98,26 +80,6 @@ public class MainActivity extends BaseActivity {
         super.onResume();
     }
 
-    //对返回键进行监听
-    //退出时的时间
-    private long mExitTime;
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            if ((System.currentTimeMillis() - mExitTime) > 1500) {
-                CommonUtil.showToast("再按一次离开券券淘");
-                mExitTime = System.currentTimeMillis();
-            } else {
-               /* finish();
-                System.exit(0);*/
-                return super.onKeyDown(keyCode, event);
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
     @OnClick({R.id.ll_tao_bao, R.id.ll_jing_dong})
     public void onViewClicked(View view) {

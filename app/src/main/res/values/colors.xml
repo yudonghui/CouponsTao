@@ -18,7 +18,13 @@
     <color name="color_gray_70">#707070</color>
     <color name="color_gray_60">#858585</color>
     <color name="color_gray_hint">#c5c5c5</color>
+    <color name="gray_A5">#A5A5A5</color>
+    <color name="gray_E5">#e5e5e5</color>
+    <color name="gray_F5">#f5f5f5</color>
+    <color name="gray_F6">#F6F6F6</color>
+    <color name="gray_E1">#e1e1e1</color>
     <color name="color_red">#ff0000</color>
-
+    <color name="color_orange">#F28D47</color>
     <color name="color_blue">#1BAAF0</color>
+    <color name="blue_ff">#5491FF</color>
 </resources>

@@ -50,4 +50,6 @@ public class Constant {
     public final static String SIGN_METHOD_MD5 = "md5";
     public final static String SIGN_METHOD_HMAC = "hmac";
     public final static String CHARSET_UTF8 = "UTF-8";
+    public final static String ACTION_CLICK = "action_click";
+    public final static String ACTION_SCROLL = "action_scroll";
 }

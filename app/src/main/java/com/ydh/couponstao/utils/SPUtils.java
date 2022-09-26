@@ -28,6 +28,9 @@ public class SPUtils {
     public static final String EMP_ID = "empId"; //咨询师ID
     public static final String USER_ID = "user_id"; //用户ID
     public static final String USER_NAME = "userName"; //咨询师姓名
+
+    public static final String DURATION = "duration";
+    public static final String ORIENTATION = "orientation";
     //存储信息，除非卸载否则一直存在
     public static final String FILE_DATA = "file_data";
     public static final String IS_FIRST = "is_first"; //是否第一次打开
@@ -85,4 +88,29 @@ public class SPUtils {
     }
 
 
+    public static void setLong(String fileNaem, String spNaem, long spValue) {
+        SharedPreferences sp = MyApplication.getContext().getSharedPreferences(fileNaem, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putLong(spNaem, spValue);
+        editor.commit();
+    }
+
+    public static long getLong(String fileNaem, String spNaem) {
+        SharedPreferences sp = MyApplication.getContext().getSharedPreferences(fileNaem, MODE_PRIVATE);
+        long spValue = sp.getLong(spNaem, 0);
+        return spValue;
+    }
+
+    public static void setInt(String fileNaem, String spNaem, int spValue) {
+        SharedPreferences sp = MyApplication.getContext().getSharedPreferences(fileNaem, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(spNaem, spValue);
+        editor.commit();
+    }
+
+    public static int getInt(String fileNaem, String spNaem) {
+        SharedPreferences sp = MyApplication.getContext().getSharedPreferences(fileNaem, MODE_PRIVATE);
+        int spValue = sp.getInt(spNaem, 0);
+        return spValue;
+    }
 }

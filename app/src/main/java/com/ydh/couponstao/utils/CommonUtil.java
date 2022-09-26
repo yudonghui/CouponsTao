@@ -63,6 +63,12 @@ public class CommonUtil {
         return metric.widthPixels;
     }
 
+    public static int getDisplayWidth(WindowManager windowManager) {
+        DisplayMetrics metric = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(metric);
+        return metric.widthPixels;
+    }
+
     /**
      * 获取屏幕高度
      *
@@ -75,6 +81,20 @@ public class CommonUtil {
         return metric.heightPixels;
     }
 
+    public static int getDisplayHeight(WindowManager windowManager) {
+        DisplayMetrics metric = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(metric);
+        return metric.heightPixels;
+    }
+
+    //获取状态栏的高度
+    public static int getStatusBarHeight() {
+        int resourceId = MyApplication.getContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            return MyApplication.getContext().getResources().getDimensionPixelSize(resourceId);
+        }
+        return 0;
+    }
     //-------------------------------------------------------手机号正则表达式-------------------------------------------------------
     /**
      * 判断字符串是否符合手机号码格式
