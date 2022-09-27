@@ -88,6 +88,7 @@ public class FloatingService extends BaseService {
         statusBarHeight = CommonUtil.getStatusBarHeight();
         initTimeTask();
     }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -189,7 +190,6 @@ public class FloatingService extends BaseService {
     public void onInterrupt() {
 
     }
-
 
 
     private boolean isStart = false;//是否开始录制操作
