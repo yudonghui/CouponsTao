@@ -52,4 +52,5 @@ public class Constant {
     public final static String CHARSET_UTF8 = "UTF-8";
     public final static String ACTION_CLICK = "action_click";
     public final static String ACTION_SCROLL = "action_scroll";
+    public final static String ACTION_BACK = "action_back";
 }

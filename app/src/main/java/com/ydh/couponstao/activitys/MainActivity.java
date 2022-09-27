@@ -1,37 +1,21 @@
 package com.ydh.couponstao.activitys;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.blankj.utilcode.util.FragmentUtils;
-import com.blankj.utilcode.util.ObjectUtils;
-import com.xuexiang.xupdate.XUpdate;
 import com.ydh.couponstao.R;
-import com.ydh.couponstao.common.CommonDialog;
-import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.common.bases.BaseActivity;
-import com.ydh.couponstao.common.updateapp.CustomUpdateParser;
-import com.ydh.couponstao.common.updateapp.CustomUpdatePrompter;
-import com.ydh.couponstao.dialogs.AgreementDialog;
-import com.ydh.couponstao.dialogs.CheckCopyDialog;
 import com.ydh.couponstao.fragments.JingDongFragment;
 import com.ydh.couponstao.fragments.TaoBaoFragment;
-import com.ydh.couponstao.interfaces.ViewInterface;
-import com.ydh.couponstao.utils.ClipboardUtils;
-import com.ydh.couponstao.utils.CommonUtil;
-import com.ydh.couponstao.utils.LogUtils;
-import com.ydh.couponstao.utils.SPUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

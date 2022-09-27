@@ -54,6 +54,7 @@ public class FloatingService extends BaseService {
     private int statusBarHeight;//状态栏高度
     private int dp20;
     private int dp50;
+    private int dp80;
     private int dp300;
     private int dp200;
     private List<ClickEntity> mClickList = new ArrayList<>();
@@ -71,6 +72,7 @@ public class FloatingService extends BaseService {
         dp200 = CommonUtil.dp2px(300);
         dp20 = CommonUtil.dp2px(20);
         dp50 = CommonUtil.dp2px(50);
+        dp80 = CommonUtil.dp2px(80);
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         layoutParams = new WindowManager.LayoutParams();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -86,6 +88,13 @@ public class FloatingService extends BaseService {
         statusBarHeight = CommonUtil.getStatusBarHeight();
         initTimeTask();
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        showFloatingWindow();
+        initData();
+        return super.onStartCommand(intent, flags, startId);
+    }
 
     private List<ClickEntity> eventList = new ArrayList<>();//需要执行的数组
     private int currentPosition = 0;//当前执行的
@@ -97,13 +106,15 @@ public class FloatingService extends BaseService {
             @Override
             public void run() {
                 ClickEntity clickEntity = eventList.get(currentPosition);
-                if (Constant.ACTION_CLICK.equals(clickEntity.getType()))
+                if (Constant.ACTION_CLICK.equals(clickEntity.getType())) {
                     autoClickView(clickEntity.getStartX(), eventList.get(currentPosition).getStartY());
-                else if (Constant.ACTION_SCROLL.equals(clickEntity.getType())) {
+                } else if (Constant.ACTION_SCROLL.equals(clickEntity.getType())) {
                     autoSlideView(clickEntity.getStartX(), clickEntity.getStartY(), clickEntity.getEndX(), clickEntity.getEndY());
+                } else if (Constant.ACTION_BACK.equals(clickEntity.getType())) {
+                    autoBackView();
                 }
                 currentPosition++;
-                Log.e("执行任务：", "creatTime:" + clickEntity.getCreateTime()
+                Log.e("执行任务：", "数量：" + currentPosition + "   creatTime:" + clickEntity.getCreateTime()
                         + "   upTime:" + clickEntity.getUpTime()
                         + "   actionTime:" + clickEntity.getActionTime()
                         + "   startX:" + clickEntity.getStartX()
@@ -180,13 +191,6 @@ public class FloatingService extends BaseService {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        showFloatingWindow();
-        initData();
-        return super.onStartCommand(intent, flags, startId);
-    }
 
     private boolean isStart = false;//是否开始录制操作
 
@@ -204,6 +208,8 @@ public class FloatingService extends BaseService {
             RecyclerView rvData = displayView.findViewById(R.id.rv_data);
             final TextView tvFinish = displayView.findViewById(R.id.tv_finish);
             final ImageView ivStop = displayView.findViewById(R.id.iv_stop);
+            layoutParams.width = dp300;
+            layoutParams.height = dp200;
             ivAdd.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
@@ -321,7 +327,6 @@ public class FloatingService extends BaseService {
                             isCycle = mDataList.get(position).isCycle();
                             mHandler.postDelayed(runnable, eventList.get(currentPosition).getActionTime() - eventList.get(currentPosition).getUpTime());
                         }
-                        notifyDataSetChanged();
                     }
                 });
                 mTvName.setOnClickListener(new View.OnClickListener() {
@@ -391,11 +396,16 @@ public class FloatingService extends BaseService {
                         textView.setY(startY - statusBarHeight);
                         flContent.addView(textView);
                         mClickList.add(new ClickEntity(createTime, mClickList.get(mClickList.size() - 1).getActionTime(), System.currentTimeMillis(), Constant.ACTION_CLICK, startX, startY));
-                    } else {
+                    } else if (Math.abs(endY - startY) > dp80) {//判定为上下滑动
                         LineView lineView = new LineView(displayView.getContext());
                         lineView.setLocation(startX, startY, endX, endY);
                         flContent.addView(lineView);
                         mClickList.add(new ClickEntity(createTime, mClickList.get(mClickList.size() - 1).getActionTime(), System.currentTimeMillis(), Constant.ACTION_SCROLL, startX, startY, endX, endY));
+                    } else if (Math.abs(endX - startX) > dp50) {//判定为返回
+                        LineView lineView = new LineView(displayView.getContext());
+                        lineView.setLocation(startX, startY, endX, endY);
+                        flContent.addView(lineView);
+                        mClickList.add(new ClickEntity(createTime, mClickList.get(mClickList.size() - 1).getActionTime(), System.currentTimeMillis(), Constant.ACTION_BACK, startX, startY, endX, endY));
                     }
                     break;
                 default:

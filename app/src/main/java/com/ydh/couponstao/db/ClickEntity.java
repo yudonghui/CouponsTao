@@ -52,6 +52,7 @@ public class ClickEntity {
     @Ignore
     public ClickEntity(long createTime,long upTime, long actionTime, String type, int startX, int startY, int endX, int endY) {
         this.createTime = createTime;
+        this.upTime = upTime;
         this.actionTime = actionTime;
         this.type = type;
         this.startX = startX;

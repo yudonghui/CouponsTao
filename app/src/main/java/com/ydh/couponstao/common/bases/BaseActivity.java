@@ -33,6 +33,8 @@ import com.blankj.utilcode.util.ObjectUtils;
 import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ydh.couponstao.R;
+import com.ydh.couponstao.activitys.AutoClickActivity;
+import com.ydh.couponstao.activitys.MainActivity;
 import com.ydh.couponstao.common.permission.PermissionListener;
 import com.ydh.couponstao.common.permission.PermissionSetting;
 import com.ydh.couponstao.common.permission.PermissionUtils;
@@ -113,21 +115,24 @@ public class BaseActivity extends AppCompatActivity {
         }
 
     }
+
     @Override
     protected void onRestart() {
         super.onRestart();
         LogUtils.e("生命周期 onRestart");
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                LogUtils.e("生命周期 子线程");
-                String clipboard = ClipboardUtils.getClipboard();
-                if (ObjectUtils.isNotEmpty(clipboard)) {
-                    new CheckCopyDialog(mContext).show(clipboard);
+        if (!(this instanceof AutoClickActivity) && !(this instanceof MainActivity))
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    LogUtils.e("生命周期 子线程");
+                    String clipboard = ClipboardUtils.getClipboard();
+                    if (ObjectUtils.isNotEmpty(clipboard)) {
+                        new CheckCopyDialog(mContext).show(clipboard);
+                    }
                 }
-            }
-        }, 1000);
+            }, 1000);
     }
+
     /**
      * 判断是否平板设备
      *
