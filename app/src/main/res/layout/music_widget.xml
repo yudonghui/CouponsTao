@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_black"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tv_previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/previous"
+        android:textColor="@color/color_white"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_data"
+        android:textColor="@color/color_white"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/tv_artist_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no"
+        android:textColor="@color/color_white"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/tv_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/next"
+        android:textColor="@color/color_white"
+        android:textSize="16dp" />
+</LinearLayout>

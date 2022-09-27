@@ -3,14 +3,12 @@ package com.ydh.couponstao.activitys;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.reflect.TypeToken;
 import com.xuexiang.xupdate.XUpdate;
 import com.ydh.couponstao.R;
 import com.ydh.couponstao.common.Constant;
@@ -20,6 +18,7 @@ import com.ydh.couponstao.common.updateapp.CustomUpdatePrompter;
 import com.ydh.couponstao.dialogs.AgreementDialog;
 import com.ydh.couponstao.entitys.HomeEntity;
 import com.ydh.couponstao.interfaces.ViewInterface;
+import com.ydh.couponstao.smallwidget.SmallWidgetActivity;
 import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.utils.SPUtils;
 import com.ydh.couponstao.utils.Strings;
@@ -44,11 +43,12 @@ public class LaunchActivity extends BaseActivity {
         setContentView(R.layout.activity_launch);
         unBind = ButterKnife.bind(this);
         int displayWidth = CommonUtil.getDisplayWidth(this);
-        int dp30 = CommonUtil.dp2px(30);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((displayWidth - dp30) / 3, (displayWidth - dp30) / 3);
+        int dp40 = CommonUtil.dp2px(40);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((displayWidth - dp40) / 3, (displayWidth - dp40) / 3);
         ArrayList<HomeEntity> homeEntities = new ArrayList<>();
         homeEntities.add(new HomeEntity(R.drawable.shape_theme, "自动化模式", 1));
         homeEntities.add(new HomeEntity(R.drawable.shape_blue_10, "领优惠券", 2));
+        homeEntities.add(new HomeEntity(R.drawable.shape_red_10, "小组件", 3));
         CommonAdapter<HomeEntity> mAdapter = new CommonAdapter<HomeEntity>(mContext, R.layout.item_main, homeEntities) {
 
             @Override
@@ -60,10 +60,12 @@ public class LaunchActivity extends BaseActivity {
                 mTvMain.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (homeEntity.getType() == 1) {
+                        if (homeEntity.getType() == 1) {//自动化模式
                             startActivity(AutoClickActivity.class);
-                        } else if (homeEntity.getType() == 2) {
+                        } else if (homeEntity.getType() == 2) {//领优惠券
                             startActivity(MainActivity.class);
+                        } else if (homeEntity.getType() == 3) {//小组件
+                            startActivity(SmallWidgetActivity.class);
                         }
                     }
                 });
