@@ -4,6 +4,7 @@
     package="com.ydh.couponstao">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission
         android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
@@ -31,6 +32,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activitys.VoiceActivity" />
         <activity android:name=".activitys.AutoClickActivity" />
         <activity android:name=".activitys.PictureActivity" />
         <activity android:name=".activitys.JdDetailActivity" />
@@ -130,6 +132,10 @@
             android:name=".smallwidget.WidgetTimerService"
             android:priority="1000"
             android:process=":remote" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7520425448678486~8181796986" />
     </application>
 
 </manifest>

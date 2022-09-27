@@ -2,16 +2,15 @@ package com.ydh.couponstao.http;
 
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.ydh.couponstao.common.Constant;
+import com.ydh.couponstao.interfaces.YdhInterface;
 import com.ydh.couponstao.utils.BitmapUtils;
 import com.ydh.couponstao.utils.LogUtils;
-import com.ydh.couponstao.utils.SPUtils;
-
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,10 +20,15 @@ import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -40,6 +44,18 @@ public class HttpClient {
     public static String JD_MATERIAL_SEARCH = "jd.union.open.goods.query";//关键词商品查询接口
     public static String JD_MATERIAL_DETAIL = "jd.union.open.goods.bigfield.query";//商品详情
     public static String JD_MATERIAL_QUERY = "jd.union.open.goods.material.query";//猜你喜欢商品推荐
+    private static HttpClient instance;
+
+    public static HttpClient getInstantce() {
+        if (instance == null) {
+            synchronized (HttpClient.class) {
+                if (instance == null) {
+                    instance = new HttpClient();
+                }
+            }
+        }
+        return instance;
+    }
 
     public static String getBaseUrl() {
         return "https://eco.taobao.com/";
@@ -128,6 +144,45 @@ public class HttpClient {
                     .build().create(ServersApi.class);
         }
         return serversApiJd;
+    }
+
+    public void post(String url, FormBody body, final YdhInterface mListener) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("referer", " https://uutool.cn/text2voice/")
+                .post(body)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (mListener != null) {
+                    mListener.onSuccess(call.toString());
+                }
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String result = response.body().string();
+                    if (mListener != null) {
+                        mListener.onSuccess(result);
+                    }
+                    //处理UI需要切换到UI线程处理
+                }
+            }
+        });
+    }
+
+    public FormBody getFormBody(HashMap<String, String> map) {
+        FormBody.Builder builder = new FormBody.Builder();
+        if (map != null) {
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                builder.add(entry.getKey(), entry.getValue());
+            }
+        }
+        return builder.build();
     }
 
     /**

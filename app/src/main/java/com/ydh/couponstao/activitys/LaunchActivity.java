@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.xuexiang.xupdate.XUpdate;
 import com.ydh.couponstao.R;
 import com.ydh.couponstao.common.Constant;
+import com.ydh.couponstao.common.SpaceItemDecoration;
 import com.ydh.couponstao.common.bases.BaseActivity;
 import com.ydh.couponstao.common.updateapp.CustomUpdateParser;
 import com.ydh.couponstao.common.updateapp.CustomUpdatePrompter;
@@ -49,6 +50,7 @@ public class LaunchActivity extends BaseActivity {
         homeEntities.add(new HomeEntity(R.drawable.shape_theme, "自动化模式", 1));
         homeEntities.add(new HomeEntity(R.drawable.shape_blue_10, "领优惠券", 2));
         homeEntities.add(new HomeEntity(R.drawable.shape_red_10, "小组件", 3));
+        homeEntities.add(new HomeEntity(R.drawable.shape_orange_10, "文字转语音", 4));
         CommonAdapter<HomeEntity> mAdapter = new CommonAdapter<HomeEntity>(mContext, R.layout.item_main, homeEntities) {
 
             @Override
@@ -66,12 +68,15 @@ public class LaunchActivity extends BaseActivity {
                             startActivity(MainActivity.class);
                         } else if (homeEntity.getType() == 3) {//小组件
                             startActivity(SmallWidgetActivity.class);
+                        } else if (homeEntity.getType() == 4) {//文字转语音
+                            startActivity(VoiceActivity.class);
                         }
                     }
                 });
             }
         };
         GridLayoutManager layout = new GridLayoutManager(mContext, 3);
+        recyclerView.addItemDecoration(new SpaceItemDecoration(CommonUtil.dp2px(10), SpaceItemDecoration.GRIDLAYOUT));
         recyclerView.setLayoutManager(layout);
         recyclerView.setAdapter(mAdapter);
         //检查版本更新
