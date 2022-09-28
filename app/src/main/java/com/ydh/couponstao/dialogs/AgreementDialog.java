@@ -2,15 +2,12 @@ package com.ydh.couponstao.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -21,11 +18,8 @@ import androidx.core.content.ContextCompat;
 
 import com.ydh.couponstao.R;
 import com.ydh.couponstao.activitys.H5Activity;
-import com.ydh.couponstao.activitys.SearchTbActivity;
 import com.ydh.couponstao.interfaces.ViewInterface;
-import com.ydh.couponstao.utils.ClipboardUtils;
 import com.ydh.couponstao.utils.SPUtils;
-import com.ydh.couponstao.utils.Strings;
 
 /**
  * Created by ydh on 2022/8/26
@@ -48,7 +42,7 @@ public class AgreementDialog {
         mTvNoAgree = (TextView) view.findViewById(R.id.tv_no_agree);
         mDialog.setCancelable(false);
         mDialog.setContentView(view);
-        SpannableString ssb = new SpannableString("您可以阅读完整版《券券淘服务和隐私协议》,来了解详细信息。");
+        SpannableString ssb = new SpannableString("您可以阅读完整版《AutoTool服务和隐私协议》,来了解详细信息。");
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
@@ -61,7 +55,7 @@ public class AgreementDialog {
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 ds.setUnderlineText(false);
-                ds.setColor(ContextCompat.getColor(mContext,R.color.color_theme));
+                ds.setColor(ContextCompat.getColor(mContext, R.color.color_theme));
             }
         };
         ssb.setSpan(clickableSpan, 8, 20, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);

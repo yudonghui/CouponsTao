@@ -43,7 +43,7 @@
         <activity android:name=".activitys.TbDetailActivity" />
         <activity android:name=".activitys.WebWiewActivity" />
         <activity android:name=".activitys.TaoBaoActivity" />
-        <activity android:name=".activitys.MainActivity" />
+        <activity android:name=".activitys.CouponsActivity" />
         <activity android:name=".activitys.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

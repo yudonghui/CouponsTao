@@ -1,6 +1,5 @@
 package com.ydh.couponstao.activitys;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
@@ -13,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager.widget.PagerAdapter;
@@ -30,7 +28,7 @@ import com.ydh.couponstao.R;
 import com.ydh.couponstao.adapter.MaterialJdAdapter;
 import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.common.SpaceItemDecoration;
-import com.ydh.couponstao.common.bases.BaseActivity;
+import com.ydh.couponstao.common.bases.BaseTaoActivity;
 import com.ydh.couponstao.entitys.CouponInfoEntity;
 import com.ydh.couponstao.entitys.ImageInfoContentEntity;
 import com.ydh.couponstao.entitys.JdBaseEntity;
@@ -45,7 +43,6 @@ import com.ydh.couponstao.utils.HttpMd5;
 import com.ydh.couponstao.utils.PicassoUtils;
 import com.ydh.couponstao.utils.Strings;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import org.json.JSONObject;
 
@@ -63,7 +60,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class JdDetailActivity extends BaseActivity {
+public class JdDetailActivity extends BaseTaoActivity {
 
     @BindView(R.id.tv_price)
     TextView tvPrice;

@@ -65,7 +65,7 @@ public class LaunchActivity extends BaseActivity {
                         if (homeEntity.getType() == 1) {//自动化模式
                             startActivity(AutoClickActivity.class);
                         } else if (homeEntity.getType() == 2) {//领优惠券
-                            startActivity(MainActivity.class);
+                            startActivity(CouponsActivity.class);
                         } else if (homeEntity.getType() == 3) {//小组件
                             startActivity(SmallWidgetActivity.class);
                         } else if (homeEntity.getType() == 4) {//文字转语音
