@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AutoTool</string>
+    <string name="app_name">CommonTool</string>
     <string name="accessibility_description">微信收款码</string>
     <string name="no_data">暂无播放数据</string>
     <string name="no">暂无</string>

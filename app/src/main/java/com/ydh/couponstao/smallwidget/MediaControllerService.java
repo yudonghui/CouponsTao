@@ -42,6 +42,7 @@ import static androidx.core.app.NotificationCompat.PRIORITY_HIGH;
 
 /**
  * Created by ydh on 2022/7/28
+ * 监听通知栏android控制媒体播放暂停的广播
  */
 @SuppressLint("OverrideAbstract")
 public class MediaControllerService extends NotificationListenerService implements RemoteController.OnClientUpdateListener {
@@ -197,7 +198,7 @@ public class MediaControllerService extends NotificationListenerService implemen
     }
 
     //////////////////////////////////RemoteController获取音乐信息/////////////////////////////////////
-    public  RemoteController remoteController;
+    public RemoteController remoteController;
 
     public void registerRemoteController() {
         remoteController = new RemoteController(this, this);
@@ -216,10 +217,13 @@ public class MediaControllerService extends NotificationListenerService implemen
             }
         }
     }
+
     private RemoteController.OnClientUpdateListener mExternalClientUpdateListener;
+
     public void setExternalClientUpdateListener(RemoteController.OnClientUpdateListener externalClientUpdateListener) {
         mExternalClientUpdateListener = externalClientUpdateListener;
     }
+
     @Override
     public void onClientChange(boolean clearing) {
         Log.e(MY_TAG, "registerRemoteController --- clearing == " + clearing);

@@ -6,8 +6,6 @@ import android.provider.Settings;
 
 import androidx.core.app.NotificationManagerCompat;
 
-import java.util.Set;
-
 /**
  * Created by ydh on 2022/7/28
  */
@@ -19,11 +17,8 @@ public class Utils {
      * @return
      */
     public static boolean isNotificationListenerEnabled(Context context) {
-        Set<String> packageNames = NotificationManagerCompat.getEnabledListenerPackages(context);
-        if (packageNames.contains(context.getPackageName())) {
-            return true;
-        }
-        return false;
+        NotificationManagerCompat notification = NotificationManagerCompat.from(context);
+        return notification.areNotificationsEnabled();
     }
 
     /**
@@ -32,6 +27,9 @@ public class Utils {
     public static void openNotificationListenSettings(Context context) {
         try {
             Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
+            intent.putExtra("app_package", context.getPackageName());
+            intent.putExtra("app_uid", context.getApplicationInfo().uid);
+            intent.putExtra("android.provider.extra.APP_PACKAGE", context.getPackageName());
             context.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();

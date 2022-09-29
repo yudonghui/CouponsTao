@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.media.RemoteController;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,11 +24,16 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.ydh.couponstao.R;
 import com.ydh.couponstao.common.bases.BaseActivity;
+import com.ydh.couponstao.utils.LogUtils;
 
 import java.util.List;
 
@@ -43,8 +49,11 @@ public class SmallWidgetActivity extends BaseActivity {
         setContentView(R.layout.activity_small_widget);
         mTvContent = findViewById(R.id.tv_content);
         mBtPlayPause = findViewById(R.id.bt_play_pause);
-        String[] aa = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MEDIA_CONTENT_CONTROL};
-        requestPermission(aa, 11);
+        String[] aa = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.MEDIA_CONTENT_CONTROL,
+        };
+        requestPermission(aa, 0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!Environment.isExternalStorageManager()) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
@@ -166,6 +175,7 @@ public class SmallWidgetActivity extends BaseActivity {
         bindService(new Intent(this, MediaControllerService.class), new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
+                LogUtils.e("服务：onServiceConnected  " + name);
                 MediaControllerService.MyBinder rcBinder = (MediaControllerService.MyBinder) service;
                 mediaControllerService = rcBinder.getService();
                 mediaControllerService.registerRemoteController();
@@ -191,7 +201,7 @@ public class SmallWidgetActivity extends BaseActivity {
 
                     @Override
                     public void onClientTransportControlUpdate(int transportControlFlags) {
-
+                        LogUtils.e("服务：onClientTransportControlUpdate  " + transportControlFlags);
                     }
 
                     @Override
@@ -209,8 +219,33 @@ public class SmallWidgetActivity extends BaseActivity {
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-
+                LogUtils.e("服务：onServiceDisconnected  " + name);
             }
         }, Context.BIND_AUTO_CREATE);
+    }
+
+    public void clickAlipay(View view) {
+        try {
+            Uri uri = Uri.parse("alipayqr://platformapi/startapp?saId=2019072665939857&page=pages%2Fside-code%2Fside-code");
+           // ClipboardUtils.setClipboardNo("http://qrcode.sh.gov.cn/enterprise/scene?f=1&m=NlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb%2Fn7a2G5Eq%2FV7NhOwqSeYpE7%2BssjCuqQ2mftqs58076E%3D&qrcodeType=80");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.putExtra("query", "f=1&m=NlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb%2Fn7a2G5Eq%2FV7NhOwqSeYpE7%2BssjCuqQ2mftqs58076E%3D&qrcodeType=80");
+            startActivity(intent);
+
+        } catch (Exception e) {
+            Toast.makeText(this, "打开失败，请检查是否安装了支付宝", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+    public void clickWx(View view){
+
+        String appId = ""; // 填移动应用的 AppId，一堆的审核。
+        IWXAPI api = WXAPIFactory.createWXAPI(this, appId);
+
+        WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
+        req.userName = "gh_d4acc9de8978"; // 填小程序原始id
+       // req.path = "pages%2Fside-code%2Fside-code";                  ////拉起小程序页面的可带参路径，不填默认拉起小程序首页，对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"。
+        req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE;// 可选打开 开发版，体验版和正式版
+        api.sendReq(req);
     }
 }

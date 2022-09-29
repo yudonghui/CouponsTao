@@ -149,7 +149,7 @@ public class NewAppWidget extends AppWidgetProvider {
             WorkManager.getInstance(context).enqueue(OneTimeWorkRequest.from(TestWorker.class));
         }
         if (TIME_TASK_ACTION.equals(action)) {
-            RemoteViews views = new RemoteViews("com.mylike.smallwidget", R.layout.new_app_widget);
+            RemoteViews views = new RemoteViews("com.ydh.couponstao", R.layout.new_app_widget);
 
             Lunar lunar = new Lunar(Calendar.getInstance());
             views.setTextViewText(R.id.tv_time, System.currentTimeMillis() + "");

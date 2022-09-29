@@ -12,7 +12,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.ydh.couponstao.R;
 import com.ydh.couponstao.adapter.FragmentAdapter;
 import com.ydh.couponstao.common.MaterialIds;
-import com.ydh.couponstao.common.bases.BaseActivity;
+import com.ydh.couponstao.common.bases.BaseTaoActivity;
 import com.ydh.couponstao.entitys.TitleEntity;
 import com.ydh.couponstao.fragments.TaoBaoMaterialFragment;
 import com.ydh.couponstao.utils.CommonUtil;
@@ -26,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TaoBaoActivity extends BaseActivity {
+public class TaoBaoActivity extends BaseTaoActivity {
 
     @BindView(R.id.tablayout)
     TabLayout tablayout;

@@ -80,4 +80,6 @@ dependencies {
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
 
     implementation 'com.google.android.gms:play-services-ads:20.0.0'
+
+    api 'com.tencent.mm.opensdk:wechat-sdk-android:+'
 }

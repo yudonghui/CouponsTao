@@ -1,6 +1,5 @@
 package com.ydh.couponstao.activitys;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
@@ -30,7 +29,7 @@ import com.ydh.couponstao.adapter.MaterialFormAdapter;
 import com.ydh.couponstao.common.CommonDialog;
 import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.common.SpaceItemDecoration;
-import com.ydh.couponstao.common.bases.BaseActivity;
+import com.ydh.couponstao.common.bases.BaseTaoActivity;
 import com.ydh.couponstao.entitys.MaterialContentEntity;
 import com.ydh.couponstao.entitys.MaterialEntity;
 import com.ydh.couponstao.entitys.TbCodeEntity;
@@ -59,7 +58,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TbDetailActivity extends BaseActivity {
+public class TbDetailActivity extends BaseTaoActivity {
 
     @BindView(R.id.return_btn)
     ImageView returnBtn;

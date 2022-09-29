@@ -38,7 +38,7 @@ public class WidgetTimerService extends Service {
                 //Intent updateIntent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
            /*     Intent updateIntent = new Intent(NewAppWidget.TIME_TASK_ACTION);
                 sendBroadcast(updateIntent);*/
-                RemoteViews views = new RemoteViews("com.mylike.smallwidget", R.layout.new_app_widget);
+                RemoteViews views = new RemoteViews("com.ydh.couponstao", R.layout.new_app_widget);
                 Log.e("NewAppWidget", "run");
                 Lunar lunar = new Lunar(Calendar.getInstance());
                 views.setTextViewText(R.id.tv_time, getCurrentDate());

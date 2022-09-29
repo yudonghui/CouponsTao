@@ -39,6 +39,7 @@ public class PermissionUtils {
 
     private static final String READ_EXTERNAL_STORAGE = "android.permission.READ_EXTERNAL_STORAGE";
     private static final String WRITE_EXTERNAL_STORAGE = "android.permission.WRITE_EXTERNAL_STORAGE";
+    private static final String MEDIA_CONTENT_CONTROL = "android.permission.MEDIA_CONTENT_CONTROL";
 
 
     public static String getName(List<String> perssionList) {
@@ -106,6 +107,9 @@ public class PermissionUtils {
                         message = "存储空间";
                     break;
                 }
+                case MEDIA_CONTENT_CONTROL:
+
+                    break;
             }
         }
         return message;
