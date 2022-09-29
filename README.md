@@ -6,16 +6,16 @@ Android 自动化操作，辅助功能无障碍，在其他应用的上层显示
 在其他应用的上层显示
 -------
 
-1、获取权限\<br>
-            <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-       2、创建服务 用来展示悬浮窗\<br>
-       
-       3、启动悬浮窗\<br>
+1、获取权限<br>
+  uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" <br>
+2、创建服务 用来展示悬浮窗<br>
+3、启动悬浮窗<br>
 
 辅助功能无障碍
+-------
 
-<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-        给Service设置无障碍模式
+uses-permission android:name="android.permission.FOREGROUND_SERVICE" <br>
+给Service设置无障碍模式
 
 <service
     android:name=".services.ScrollService"
