@@ -62,7 +62,7 @@ public class ScrollService extends BaseService {
             @Override
             public void run() {
                 if (orientation == 0) {//上下滑动
-                    autoSlideView(dp180, 1200, dp180, 50);
+                    autoSlideView(dp180, 1500, dp180, 50);
                 } else {//左右滑动
                     autoSlideView(dp300, dp180, 0, dp180);
                 }

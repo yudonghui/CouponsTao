@@ -41,7 +41,7 @@ public class BaseService extends AccessibilityService {
         path.moveTo(startX, startY);
         path.lineTo(endX, endY);
         GestureDescription gestureDescription = new GestureDescription.Builder()
-                .addStroke(new GestureDescription.StrokeDescription(path, 0, 500))
+                .addStroke(new GestureDescription.StrokeDescription(path, 0, 800))
                 .build();
         dispatchGesture(gestureDescription, new GestureResultCallback() {
             @Override
