@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.ydh.couponstao"
-        minSdkVersion 24
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 101
         versionName "1.0.1"
@@ -82,4 +82,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:20.0.0'
 
     api 'com.tencent.mm.opensdk:wechat-sdk-android:+'
+
+    //图表
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

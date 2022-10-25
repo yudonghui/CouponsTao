@@ -8,18 +8,17 @@
     <uses-permission
         android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <!--服务弹窗-->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <!-- 模拟操作-->
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- 服务弹窗 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 模拟操作 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACTION_NOTIFICATION_LISTENER_SETTINGS" />
-    <!--想要当前Android设备中正在运行的媒体会话的controller list
-    不幸的是，此权限仅限于系统应用程序(属于系统映像的应用程序)或属于设备供应商的应用程序(即.应用签名必须与平台的签名相同).因此，对于第三方应用程序，这是不允许的-->
+    <!--
+想要当前Android设备中正在运行的媒体会话的controller list
+    不幸的是，此权限仅限于系统应用程序(属于系统映像的应用程序)或属于设备供应商的应用程序(即.应用签名必须与平台的签名相同).因此，对于第三方应用程序，这是不允许的
+    -->
     <uses-permission
         android:name="android.permission.MEDIA_CONTENT_CONTROL"
         tools:ignore="ProtectedPermissions" />
@@ -34,6 +33,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activitys.TragActivity"></activity>
+        <activity android:name=".activitys.MpAndroidChartActivity" />
+        <activity android:name=".activitys.DeviceInfoActivity" />
         <activity android:name=".activitys.VoiceActivity" />
         <activity android:name=".activitys.AutoClickActivity" />
         <activity android:name=".activitys.PictureActivity" />
@@ -60,6 +62,7 @@
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility" />
@@ -70,12 +73,11 @@
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility" />
-        </service>
-
-        <!--小组件-->
+        </service> <!-- 小组件 -->
         <receiver android:name=".smallwidget.CommonWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -135,14 +137,16 @@
             android:name=".smallwidget.WidgetTimerService"
             android:priority="1000"
             android:process=":remote" />
-   <!--     <service
+        <!--
+     <service
             android:name=".smallwidget.MediaControllerService"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
-        </service>-->
+        </service>
+        -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-7520425448678486~8181796986" />

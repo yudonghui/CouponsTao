@@ -51,6 +51,8 @@ public class LaunchActivity extends BaseActivity {
         homeEntities.add(new HomeEntity(R.drawable.shape_blue_10, "领优惠券", 2));
         homeEntities.add(new HomeEntity(R.drawable.shape_red_10, "小组件", 3));
         homeEntities.add(new HomeEntity(R.drawable.shape_orange_10, "文字转语音", 4));
+        homeEntities.add(new HomeEntity(R.drawable.shape_theme, "设备信息", 5));
+        homeEntities.add(new HomeEntity(R.drawable.shape_red_10, "MPAndroidChart", 6));
         CommonAdapter<HomeEntity> mAdapter = new CommonAdapter<HomeEntity>(mContext, R.layout.item_main, homeEntities) {
 
             @Override
@@ -70,6 +72,10 @@ public class LaunchActivity extends BaseActivity {
                             startActivity(SmallWidgetActivity.class);
                         } else if (homeEntity.getType() == 4) {//文字转语音
                             startActivity(VoiceActivity.class);
+                        } else if (homeEntity.getType() == 5) {//设备信息
+                            startActivity(DeviceInfoActivity.class);
+                        } else if (homeEntity.getType() == 6) {//
+                            startActivity(MpAndroidChartActivity.class);
                         }
                     }
                 });
