@@ -11,9 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:visibility="gone"
         android:onClick="clickAlipay"
-        android:text="打开支付宝" />
+        android:text="打开支付宝"
+        android:visibility="gone" />
 
     <Button
         android:layout_width="wrap_content"
@@ -21,16 +21,32 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:onClick="clickWx"
-        android:visibility="gone"
-        android:text="打开微信" />
+        android:text="打开微信"
+        android:visibility="gone" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:onClick="addWidget"
-        android:text="打开微信二维码" />
+        android:onClick="addCommonWidget"
+        android:text="添加小组件" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:onClick="addNewAppWidget"
+        android:text="添加小组件(含定时服务)" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:onClick="addMusicWidget"
+        android:text="添加小组件(读取正在播放音乐 未完成)" />
 
     <Button
         android:layout_width="wrap_content"

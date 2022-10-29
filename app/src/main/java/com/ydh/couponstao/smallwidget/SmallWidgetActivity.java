@@ -1,6 +1,7 @@
 package com.ydh.couponstao.smallwidget;
 
 import android.Manifest;
+import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -15,10 +16,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -33,6 +32,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.ydh.couponstao.R;
 import com.ydh.couponstao.common.bases.BaseActivity;
+import com.ydh.couponstao.utils.CommonUtil;
 import com.ydh.couponstao.utils.LogUtils;
 
 import java.util.List;
@@ -75,29 +75,6 @@ public class SmallWidgetActivity extends BaseActivity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void addWidget(View view) {
-        if (isAccessibilitySettingsOn(SmallWidgetActivity.this)) {
-            Intent intent = new Intent(SmallWidgetActivity.this, PayAccessibility.class);
-            startService(intent);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent1 = new Intent();
-                    ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
-                    intent1.setAction(Intent.ACTION_MAIN);
-                    intent1.addCategory(Intent.CATEGORY_LAUNCHER);
-                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent1.setComponent(cmp);
-                    startActivity(intent1);
-                }
-            }, 200);
-            ;
-        } else {
-            startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-            finish();
-        }
-    }
 
     /**
      * 是否安装了微信
@@ -121,37 +98,6 @@ public class SmallWidgetActivity extends BaseActivity {
         return false;
     }
 
-    /**
-     * 辅助服务是否开启
-     *
-     * @param context 活动context
-     * @return
-     */
-    public static boolean isAccessibilitySettingsOn(Context context) {
-        int accessibilityEnabled = 0;
-        final String service = context.getPackageName() + "/" + PayAccessibility.class.getCanonicalName();
-        try {
-            accessibilityEnabled = Settings.Secure.getInt(context.getApplicationContext().getContentResolver(),
-                    Settings.Secure.ACCESSIBILITY_ENABLED);
-        } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
-        }
-        TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
-        if (accessibilityEnabled == 1) {
-            String settingValue = Settings.Secure.getString(context.getApplicationContext().getContentResolver(),
-                    Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-            if (settingValue != null) {
-                mStringColonSplitter.setString(settingValue);
-                while (mStringColonSplitter.hasNext()) {
-                    String accessibilityService = mStringColonSplitter.next();
-                    if (accessibilityService.equalsIgnoreCase(service)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
 
     private MediaControllerService mediaControllerService;
 
@@ -227,7 +173,7 @@ public class SmallWidgetActivity extends BaseActivity {
     public void clickAlipay(View view) {
         try {
             Uri uri = Uri.parse("alipayqr://platformapi/startapp?saId=2019072665939857&page=pages%2Fside-code%2Fside-code");
-           // ClipboardUtils.setClipboardNo("http://qrcode.sh.gov.cn/enterprise/scene?f=1&m=NlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb%2Fn7a2G5Eq%2FV7NhOwqSeYpE7%2BssjCuqQ2mftqs58076E%3D&qrcodeType=80");
+            // ClipboardUtils.setClipboardNo("http://qrcode.sh.gov.cn/enterprise/scene?f=1&m=NlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb%2Fn7a2G5Eq%2FV7NhOwqSeYpE7%2BssjCuqQ2mftqs58076E%3D&qrcodeType=80");
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             intent.putExtra("query", "f=1&m=NlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb%2Fn7a2G5Eq%2FV7NhOwqSeYpE7%2BssjCuqQ2mftqs58076E%3D&qrcodeType=80");
             startActivity(intent);
@@ -237,15 +183,47 @@ public class SmallWidgetActivity extends BaseActivity {
 
         }
     }
-    public void clickWx(View view){
+
+    public void clickWx(View view) {
 
         String appId = ""; // 填移动应用的 AppId，一堆的审核。
         IWXAPI api = WXAPIFactory.createWXAPI(this, appId);
 
         WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
         req.userName = "gh_d4acc9de8978"; // 填小程序原始id
-       // req.path = "pages%2Fside-code%2Fside-code";                  ////拉起小程序页面的可带参路径，不填默认拉起小程序首页，对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"。
+        // req.path = "pages%2Fside-code%2Fside-code";                  ////拉起小程序页面的可带参路径，不填默认拉起小程序首页，对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"。
         req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE;// 可选打开 开发版，体验版和正式版
         api.sendReq(req);
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void addCommonWidget(View view) {
+        addSmallWidget(CommonWidget.class);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void addNewAppWidget(View view) {
+        addSmallWidget(NewAppWidget.class);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void addMusicWidget(View view) {
+        addSmallWidget(MusicWidget.class);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void addSmallWidget(Class<?> widgetClass) {
+        AppWidgetManager instance = AppWidgetManager.getInstance(mContext);
+        ComponentName componentName = new ComponentName(mContext, widgetClass);
+        int[] appWidgetIds = instance.getAppWidgetIds(componentName);
+        if (appWidgetIds != null && appWidgetIds.length > 0) {
+            CommonUtil.showToast("组件已经添加过");
+            return;
+        }
+        if (instance.isRequestPinAppWidgetSupported()) {
+            instance.requestPinAppWidget(componentName, null, null);
+        }
+
     }
 }

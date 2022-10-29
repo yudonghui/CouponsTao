@@ -1,5 +1,6 @@
 package com.ydh.couponstao.activitys;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -53,6 +54,7 @@ public class LaunchActivity extends BaseActivity {
         homeEntities.add(new HomeEntity(R.drawable.shape_orange_10, "文字转语音", 4));
         homeEntities.add(new HomeEntity(R.drawable.shape_theme, "设备信息", 5));
         homeEntities.add(new HomeEntity(R.drawable.shape_red_10, "MPAndroidChart", 6));
+        homeEntities.add(new HomeEntity(R.drawable.shape_blue_10, "图片识别", 7));
         CommonAdapter<HomeEntity> mAdapter = new CommonAdapter<HomeEntity>(mContext, R.layout.item_main, homeEntities) {
 
             @Override
@@ -76,6 +78,8 @@ public class LaunchActivity extends BaseActivity {
                             startActivity(DeviceInfoActivity.class);
                         } else if (homeEntity.getType() == 6) {//
                             startActivity(MpAndroidChartActivity.class);
+                        } else if (homeEntity.getType() == 7) {//图片识别
+                           startActivity(MachineLearningActivity.class);
                         }
                     }
                 });

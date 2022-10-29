@@ -24,6 +24,11 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
+    <uses-feature android:name="android.hardware.camera.any" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -33,7 +38,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activitys.TragActivity"></activity>
+        <activity android:name=".activitys.CameraXActivity"></activity>
+        <activity android:name=".activitys.MachineLearningActivity" />
         <activity android:name=".activitys.MpAndroidChartActivity" />
         <activity android:name=".activitys.DeviceInfoActivity" />
         <activity android:name=".activitys.VoiceActivity" />
@@ -150,6 +156,9 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-7520425448678486~8181796986" />
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="ocr" />
     </application>
 
 </manifest>
