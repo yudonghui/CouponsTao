@@ -27,9 +27,6 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.ydh.couponstao.R;
 import com.ydh.couponstao.common.bases.BaseActivity;
 import com.ydh.couponstao.utils.CommonUtil;
@@ -172,28 +169,18 @@ public class SmallWidgetActivity extends BaseActivity {
 
     public void clickAlipay(View view) {
         try {
-            Uri uri = Uri.parse("alipayqr://platformapi/startapp?saId=2019072665939857&page=pages%2Fside-code%2Fside-code");
+            //Uri uri = Uri.parse("alipayqr://platformapi/startapp?saId=2019072665939857&page=pages%2Fside-code%2Fside-code&query=f=1&m=NlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb/n7a2G5Eq/V7NhOwqSeYpE7+ssjCuqQ2mftqs58076E=&qrcodeType=80");
             // ClipboardUtils.setClipboardNo("http://qrcode.sh.gov.cn/enterprise/scene?f=1&m=NlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb%2Fn7a2G5Eq%2FV7NhOwqSeYpE7%2BssjCuqQ2mftqs58076E%3D&qrcodeType=80");
+
+           Uri uri = Uri.parse("alipays://platformapi/startapp?saId=10000007&qrcode=http%3A%2F%2Fqrcode.sh.gov.cn%2Fenterprise%2Fscene%3Ff%3D1%26m%3DNlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb%2Fn7a2G5Eq%2FV7NhOwqSeYpE7%2BssjCuqQ2mftqs58076E%3D%26qrcodeType%3D80");
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            intent.putExtra("query", "f=1&m=NlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb%2Fn7a2G5Eq%2FV7NhOwqSeYpE7%2BssjCuqQ2mftqs58076E%3D&qrcodeType=80");
+            //intent.putExtra("query", "f=1&m=NlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb/n7a2G5Eq/V7NhOwqSeYpE7+ssjCuqQ2mftqs58076E=&qrcodeType=80");
             startActivity(intent);
 
         } catch (Exception e) {
             Toast.makeText(this, "打开失败，请检查是否安装了支付宝", Toast.LENGTH_SHORT).show();
 
         }
-    }
-
-    public void clickWx(View view) {
-
-        String appId = ""; // 填移动应用的 AppId，一堆的审核。
-        IWXAPI api = WXAPIFactory.createWXAPI(this, appId);
-
-        WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
-        req.userName = "gh_d4acc9de8978"; // 填小程序原始id
-        // req.path = "pages%2Fside-code%2Fside-code";                  ////拉起小程序页面的可带参路径，不填默认拉起小程序首页，对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"。
-        req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE;// 可选打开 开发版，体验版和正式版
-        api.sendReq(req);
     }
 
 

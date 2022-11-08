@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/shape_gray_20"
     android:orientation="vertical"
     android:paddingLeft="15dp"
@@ -30,14 +30,15 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="10dp">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <ImageView
                 android:id="@+id/iv_alipay"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
                 android:background="@drawable/shape_gray_10"
-                android:padding="12dp"
+                android:padding="15dp"
                 android:src="@mipmap/scan_white" />
 
             <TextView
@@ -46,7 +47,7 @@
                 android:layout_marginTop="3dp"
                 android:text="扫一扫"
                 android:textColor="@color/color_white"
-                android:textSize="13sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -54,15 +55,16 @@
             android:id="@+id/ll_alipay_pay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <ImageView
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
                 android:background="@drawable/shape_gray_10"
-                android:padding="12dp"
+                android:padding="15dp"
                 android:src="@mipmap/two_white" />
 
             <TextView
@@ -72,7 +74,7 @@
                 android:gravity="center"
                 android:text="付款码"
                 android:textColor="@color/color_white"
-                android:textSize="13sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -80,15 +82,16 @@
             android:id="@+id/ll_alipay_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <ImageView
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
                 android:background="@drawable/shape_gray_10"
-                android:padding="12dp"
+                android:padding="15dp"
                 android:src="@mipmap/two_white" />
 
             <TextView
@@ -99,7 +102,7 @@
                 android:gravity="center"
                 android:text="随身码"
                 android:textColor="@color/color_white"
-                android:textSize="13sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -109,7 +112,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="12dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -117,7 +120,7 @@
             android:id="@+id/tv_wx"
             android:layout_width="15dp"
             android:layout_height="wrap_content"
-            android:text="微信"
+            android:text="微    信"
             android:textColor="@color/color_white"
             android:textSize="14sp" />
 
@@ -128,13 +131,14 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="10dp">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <ImageView
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
                 android:background="@drawable/shape_gray_10"
-                android:padding="12dp"
+                android:padding="15dp"
                 android:src="@mipmap/scan_white" />
 
             <TextView
@@ -144,7 +148,7 @@
                 android:gravity="center"
                 android:text="扫一扫"
                 android:textColor="@color/color_white"
-                android:textSize="13sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -153,16 +157,16 @@
             android:id="@+id/ll_wx_pay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="20dp"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="gone">
 
             <ImageView
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
                 android:background="@drawable/shape_gray_10"
-                android:padding="12dp"
+                android:padding="15dp"
                 android:src="@mipmap/two_white" />
 
             <TextView
@@ -172,7 +176,7 @@
                 android:gravity="center"
                 android:text="付款码"
                 android:textColor="@color/color_white"
-                android:textSize="13sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -180,16 +184,16 @@
             android:id="@+id/ll_wx_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="20dp"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="gone">
 
             <ImageView
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
                 android:background="@drawable/shape_gray_10"
-                android:padding="12dp"
+                android:padding="15dp"
                 android:src="@mipmap/two_white" />
 
             <TextView
@@ -200,7 +204,7 @@
                 android:gravity="center"
                 android:text="随身码"
                 android:textColor="@color/color_white"
-                android:textSize="13sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
