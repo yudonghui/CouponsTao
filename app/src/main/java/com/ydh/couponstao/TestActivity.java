@@ -1,12 +1,11 @@
 package com.ydh.couponstao;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,8 +19,6 @@ import com.ydh.couponstao.entitys.MaterialEntity;
 import com.ydh.couponstao.entitys.TbCodeEntity;
 import com.ydh.couponstao.entitys.TbDetailEntity;
 import com.ydh.couponstao.entitys.UrlEntity;
-import com.ydh.couponstao.http.BaseBack;
-import com.ydh.couponstao.http.BaseEntity;
 import com.ydh.couponstao.http.ErrorEntity;
 import com.ydh.couponstao.http.HttpClient;
 import com.ydh.couponstao.utils.ClipboardUtils;
@@ -49,6 +46,8 @@ public class TestActivity extends BaseActivity {
     TextView tvTitle;
     @BindView(R.id.tv_right)
     TextView tvRight;
+    @BindView(R.id.webView)
+    WebView webView;
     private MaterialEntity materialEntity;
 
     @Override
@@ -57,6 +56,27 @@ public class TestActivity extends BaseActivity {
         setContentView(R.layout.activity_test);
         unBind = ButterKnife.bind(this);
         materialEntity = (MaterialEntity) getIntent().getSerializableExtra("materialEntity");
+        // 开启javascript 渲染
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.contains("http") || url.contains("https")) {
+                    // 返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
+                    view.loadUrl(url);
+                    return true;
+                } else {
+                    Uri uri = Uri.parse(url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                    return true;
+                }
+            }
+
+        });
+        // 载入内容
+        //webView.loadUrl("https://yudonghui.github.io/pages/test.html");
+        webView.loadUrl("file:///android_asset/index.html");
     }
 
     public void couponGet(View view) {

@@ -1,6 +1,5 @@
 package com.ydh.couponstao.activitys;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuexiang.xupdate.XUpdate;
 import com.ydh.couponstao.R;
+import com.ydh.couponstao.TestActivity;
 import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.common.SpaceItemDecoration;
 import com.ydh.couponstao.common.bases.BaseActivity;
@@ -55,6 +55,8 @@ public class LaunchActivity extends BaseActivity {
         homeEntities.add(new HomeEntity(R.drawable.shape_theme, "设备信息", 5));
         homeEntities.add(new HomeEntity(R.drawable.shape_red_10, "MPAndroidChart", 6));
         homeEntities.add(new HomeEntity(R.drawable.shape_blue_10, "图片识别", 7));
+        homeEntities.add(new HomeEntity(R.drawable.shape_orange_10, "PING接口", 8));
+        homeEntities.add(new HomeEntity(R.drawable.shape_black_15, "测试页面", 1000));
         CommonAdapter<HomeEntity> mAdapter = new CommonAdapter<HomeEntity>(mContext, R.layout.item_main, homeEntities) {
 
             @Override
@@ -79,7 +81,11 @@ public class LaunchActivity extends BaseActivity {
                         } else if (homeEntity.getType() == 6) {//
                             startActivity(MpAndroidChartActivity.class);
                         } else if (homeEntity.getType() == 7) {//图片识别
-                           startActivity(MachineLearningActivity.class);
+                            startActivity(MachineLearningActivity.class);
+                        } else if (homeEntity.getType() == 8) {//PING接口
+
+                        } else {
+                            startActivity(TestActivity.class);
                         }
                     }
                 });

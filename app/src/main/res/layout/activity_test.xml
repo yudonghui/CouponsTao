@@ -41,39 +41,58 @@
             android:textSize="18sp" />
     </RelativeLayout>
 
-    <Button
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="couponGet"
-        android:text="淘宝客-公用-阿里妈妈推广券详情查询" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="infoGet"
-        android:text="淘宝客-公用-淘宝客商品详情查询(简版)" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="clickExtract"
-        android:text=" 淘宝客-公用-链接解析出商品id" />
+            <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="jdMaterialQurey"
-        android:text="京东-猜你喜欢商品推荐" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="couponGet"
+                android:text="淘宝客-公用-阿里妈妈推广券详情查询" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="commonGet"
-        android:text="京东-网站/APP获取推广链接" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="infoGet"
+                android:text="淘宝客-公用-淘宝客商品详情查询(简版)" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="commonGet"
-        android:text="京东-社交媒体获取推广链接" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="clickExtract"
+                android:text=" 淘宝客-公用-链接解析出商品id" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="jdMaterialQurey"
+                android:text="京东-猜你喜欢商品推荐" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="commonGet"
+                android:text="京东-网站/APP获取推广链接" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="commonGet"
+                android:text="京东-社交媒体获取推广链接" />
+        </LinearLayout>
+
+    </ScrollView>
+
+
 </LinearLayout>

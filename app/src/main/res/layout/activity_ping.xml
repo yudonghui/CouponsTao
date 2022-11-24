@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_ping"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true">
+
+    <TextView
+        android:id="@+id/tv_ping"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@android:color/black"
+        android:gravity="center"
+        android:text="PING测试"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_input_ip"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/bg_gray_box_10"
+        android:hint="请输入IP或域名"
+        android:imeOptions="actionDone"
+        android:lines="1"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:singleLine="true"
+        android:textColor="#3C3C3C"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/btn_ping"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_ping" />
+
+    <Button
+        android:id="@+id/btn_ping"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_margin="8dp"
+        android:background="@android:color/holo_green_light"
+        android:text="ping"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/et_input_ip"
+        app:layout_constraintTop_toBottomOf="@id/tv_ping" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_cycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_input_ip" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
