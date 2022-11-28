@@ -70,6 +70,7 @@ public class TestActivity extends BaseActivity {
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
                     return true;
+
                 }
             }
 
