@@ -38,6 +38,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activitys.AutoCallActivity"></activity>
         <activity android:name=".activitys.PingActivity" />
         <activity android:name=".activitys.CameraXActivity" />
         <activity android:name=".activitys.MachineLearningActivity" />

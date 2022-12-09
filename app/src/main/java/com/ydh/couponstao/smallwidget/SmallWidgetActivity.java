@@ -172,7 +172,8 @@ public class SmallWidgetActivity extends BaseActivity {
             //Uri uri = Uri.parse("alipayqr://platformapi/startapp?saId=2019072665939857&page=pages%2Fside-code%2Fside-code&query=f=1&m=NlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb/n7a2G5Eq/V7NhOwqSeYpE7+ssjCuqQ2mftqs58076E=&qrcodeType=80");
             // ClipboardUtils.setClipboardNo("http://qrcode.sh.gov.cn/enterprise/scene?f=1&m=NlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb%2Fn7a2G5Eq%2FV7NhOwqSeYpE7%2BssjCuqQ2mftqs58076E%3D&qrcodeType=80");
 
-           Uri uri = Uri.parse("alipays://platformapi/startapp?saId=10000007&qrcode=http%3A%2F%2Fqrcode.sh.gov.cn%2Fenterprise%2Fscene%3Ff%3D1%26m%3DNlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb%2Fn7a2G5Eq%2FV7NhOwqSeYpE7%2BssjCuqQ2mftqs58076E%3D%26qrcodeType%3D80");
+            //Uri uri = Uri.parse("alipays://platformapi/startapp?saId=10000007&qrcode=http%3A%2F%2Fqrcode.sh.gov.cn%2Fenterprise%2Fscene%3Ff%3D1%26m%3DNlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb%2Fn7a2G5Eq%2FV7NhOwqSeYpE7%2BssjCuqQ2mftqs58076E%3D%26qrcodeType%3D80");
+            Uri uri = Uri.parse("alipayqr://platformapi/startapp?saId=2019072665939857&url=http://qrcode.sh.gov.cn/enterprise/scene?f=1&m=EcPfEFNldeTEhzneoJ27FKpn7alUgJ2e6H8Nxvhk5iDGZvJZzvzRStYjesV%2Fj%2FsKWfwC4Q8PZH8utHsMtKJNt%2F1KT01n3VyzEwLsjZJCFvE%3D&qrcodeType=80");
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             //intent.putExtra("query", "f=1&m=NlxwFa2pjiTRm6RXo5q4OQZFSgdsCCVTd073S006ueObkNt629ISHyDD2LEHPfOb/n7a2G5Eq/V7NhOwqSeYpE7+ssjCuqQ2mftqs58076E=&qrcodeType=80");
             startActivity(intent);
