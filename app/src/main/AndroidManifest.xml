@@ -85,7 +85,8 @@
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility" />
-        </service> <!-- 小组件 -->
+        </service>
+        <!-- 小组件 -->
         <receiver android:name=".smallwidget.CommonWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
