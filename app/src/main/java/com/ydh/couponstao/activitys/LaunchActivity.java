@@ -122,7 +122,6 @@ public class LaunchActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             if ((System.currentTimeMillis() - mExitTime) > 1500) {
                 CommonUtil.showToast("再按一次离开券券淘");
