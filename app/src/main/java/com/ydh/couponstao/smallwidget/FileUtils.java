@@ -1,6 +1,11 @@
 package com.ydh.couponstao.smallwidget;
 
+import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Environment;
+import android.view.View;
+
+import com.ydh.couponstao.utils.LogUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +16,66 @@ import java.io.IOException;
  * Created by ydh on 2020/11/25
  */
 public class FileUtils {
+    public static String screenshot(Activity mActivity) {
+        // 获取屏幕
+        View dView = mActivity.getWindow().getDecorView().getRootView();
+        dView.setDrawingCacheEnabled(true);
+        dView.buildDrawingCache();
+        Bitmap bmp = dView.getDrawingCache();
+        if (bmp != null) {
+            try {
+                // 获取内置SD卡路径
+                String sdCardPath = Environment.getExternalStorageDirectory().getPath();
+                // 图片文件路径
+                String filePath = sdCardPath + File.separator + "screenshot.png";
+
+                File file = new File(filePath);
+
+                FileOutputStream os = new FileOutputStream(file);
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
+                os.flush();
+                os.close();
+                return filePath;//176,91
+            } catch (Exception e) {
+            } finally {
+                dView.setDrawingCacheEnabled(false);
+            }
+        }
+        return "";
+    }
+
+    public static String screenshot() {
+        try {
+
+            // 获取内置SD卡路径
+            String sdCardPath = Environment.getExternalStorageDirectory().getPath();
+            // 图片文件路径
+            String filePath = sdCardPath + File.separator + "screenshot.png";
+            LogUtils.e("路径：" + filePath);
+            Process process = Runtime.getRuntime().exec("screencap " + filePath);
+            process.waitFor();
+
+
+           /* // 获取内置SD卡路径
+            String sdCardPath = Environment.getExternalStorageDirectory().getPath();
+            // 图片文件路径
+            String filePath = sdCardPath + File.separator + "screenshot.png";
+
+            Process process = Runtime.getRuntime().exec("adb shell");
+            DataOutputStream os = new DataOutputStream(process.getOutputStream());
+            os.writeBytes("screencap " + filePath + "\n");
+            os.writeBytes("exit\n");
+            os.flush();
+            os.close();
+            process.waitFor();*/
+            return "";
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            System.out.println("doCommand.IOException");
+        }
+        return "";
+    }
+
     public static String writeSD(String content) {
         //文件输出流
         FileOutputStream out = null;
@@ -30,7 +95,7 @@ public class FileUtils {
             }
         }
         try {
-            out = new FileOutputStream(file,true);
+            out = new FileOutputStream(file, true);
             out.write(content.getBytes());
             out.write(("\r\n" + content).getBytes());
             return content;

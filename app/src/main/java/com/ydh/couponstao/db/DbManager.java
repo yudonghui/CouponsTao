@@ -267,5 +267,83 @@ public class DbManager {
                     }
                 });
     }
+    @SuppressLint("CheckResult")
+    public void insertDlt(final List<LotteryEntity> list, final DbInterface mListener) {
+        Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                try {
+                    ConnectDatabase.getInstance(MyApplication.getContext())
+                            .getLotteryDao()
+                            .insert(list);
+                    emitter.onNext("添加成功");
+                } catch (Exception e) {
+                    emitter.onError(e);
+                }
 
+
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        mListener.success(s);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mListener.fail();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+    @SuppressLint("CheckResult")
+    public void queryDlt(int type,final DbInterface mListener) {
+        Observable.create(new ObservableOnSubscribe<List<LotteryEntity>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<LotteryEntity>> emitter) throws Exception {
+                try {
+                    List<LotteryEntity> clickEntities = ConnectDatabase.getInstance(MyApplication.getContext())
+                            .getLotteryDao()
+                            .query(type);
+                    emitter.onNext(clickEntities);
+                } catch (Exception e) {
+                    emitter.onError(e);
+                }
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+
+                .subscribe(new Observer<List<LotteryEntity>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<LotteryEntity> connectEntitie) {
+                        mListener.success(connectEntitie);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mListener.fail();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 }

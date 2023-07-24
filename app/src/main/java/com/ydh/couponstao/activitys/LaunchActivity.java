@@ -56,6 +56,7 @@ public class LaunchActivity extends BaseActivity {
         homeEntities.add(new HomeEntity(R.drawable.shape_red_10, "MPAndroidChart", 6));
         homeEntities.add(new HomeEntity(R.drawable.shape_blue_10, "图片识别", 7));
         homeEntities.add(new HomeEntity(R.drawable.shape_orange_10, "PING接口", 8));
+        homeEntities.add(new HomeEntity(R.drawable.shape_red_10, "彩票数据", 9));
         homeEntities.add(new HomeEntity(R.drawable.shape_black_15, "测试页面", 1000));
         CommonAdapter<HomeEntity> mAdapter = new CommonAdapter<HomeEntity>(mContext, R.layout.item_main, homeEntities) {
 
@@ -83,7 +84,9 @@ public class LaunchActivity extends BaseActivity {
                         } else if (homeEntity.getType() == 7) {//图片识别
                             startActivity(MachineLearningActivity.class);
                         } else if (homeEntity.getType() == 8) {//PING接口
-
+                            startActivity(PingActivity.class);
+                        } else if (homeEntity.getType() == 9) {
+                            startActivity(LotteryActivity.class);
                         } else {
                             startActivity(TestActivity.class);
                         }

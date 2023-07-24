@@ -13,8 +13,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-
 import com.ydh.couponstao.R;
 import com.ydh.couponstao.common.bases.BaseActivity;
 import com.ydh.couponstao.dialogs.EditeDialog;
@@ -32,6 +30,7 @@ public class AutoClickActivity extends BaseActivity {
     private TextView mTvLocation;
     private RadioGroup mRgScroll;
     private TextView mTvInput;
+    private TextView mTvResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +40,7 @@ public class AutoClickActivity extends BaseActivity {
         mRgScroll = findViewById(R.id.rg_scroll);
         mTvInput = findViewById(R.id.tv_input);
         mTvLocation = findViewById(R.id.tv_location);
+        mTvResult = findViewById(R.id.tv_result);
         checkPermission();
         startActivityForResult(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS), 111);
         initListener();
@@ -90,7 +90,7 @@ public class AutoClickActivity extends BaseActivity {
         return true;
     }
 
-    @Override
+/*    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0) {
@@ -103,7 +103,7 @@ public class AutoClickActivity extends BaseActivity {
 
             }
         }
-    }
+    }*/
 
     public void buttonStart(View view) {
         Intent serviceFloat = new Intent(this, FloatingService.class);
@@ -134,4 +134,5 @@ public class AutoClickActivity extends BaseActivity {
         }
         return super.onTouchEvent(event);
     }
+
 }

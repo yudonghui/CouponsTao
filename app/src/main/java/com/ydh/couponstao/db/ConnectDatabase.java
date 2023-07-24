@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {ClickEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {ClickEntity.class,LotteryEntity.class}, version = 1, exportSchema = false)
 public abstract class ConnectDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "ConnectDatabase.db";
@@ -27,5 +27,6 @@ public abstract class ConnectDatabase extends RoomDatabase {
     }
 
     public abstract ClickDao getClickDao();
+    public abstract LotteryDao getLotteryDao();
 
 }

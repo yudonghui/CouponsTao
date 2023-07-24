@@ -19,6 +19,7 @@ package com.ydh.couponstao.common.updateapp;
 import androidx.annotation.NonNull;
 
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
+import com.ydh.couponstao.common.Constant;
 import com.ydh.couponstao.http.HttpClient;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.FileCallBack;
@@ -48,6 +49,8 @@ public class OKHttpUpdateHttpService implements IUpdateHttpService {
         OkHttpUtils.get()
                 .url(url)
                 .params(transform(params))
+                .addHeader("apikey", Constant.API_KEY)
+                .addHeader("Authorization", "Bearer " + Constant.API_KEY)
                 .build()
                 .connTimeOut(HttpClient.timeOut)
                 .readTimeOut(HttpClient.timeOut)
@@ -72,6 +75,8 @@ public class OKHttpUpdateHttpService implements IUpdateHttpService {
         OkHttpUtils.post()
                 .url(url)
                 .params(transform(params))
+                .addHeader("apikey", Constant.API_KEY)
+                .addHeader("Authorization", "Bearer " + Constant.API_KEY)
                 .build()
                 .connTimeOut(HttpClient.timeOut)
                 .readTimeOut(HttpClient.timeOut)

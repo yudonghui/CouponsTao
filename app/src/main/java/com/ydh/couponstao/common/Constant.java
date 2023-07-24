@@ -13,9 +13,13 @@ public class Constant {
     /**
      * 检测app是否需要更新
      */
-    public final static String UPDATE_URL = "http://upgrade.app.mylikesh.cn/coupons/android/check";
-    //public final static String DOWNLOAD_URL = "http://upgrade.app.mylikesh.cn/coupons/android/coupons.apk";
-    public final static String DOWNLOAD_URL = "http://d.maps9.com/52f6";
+    public final static String UPDATE_URL = "https://iaoqbthyohbschdxnvya.supabase.co/rest/v1/version";
+    public final static String DOWNLOAD_URL = "https://spark.appc02.com/52f6";
+    /**
+     * supabase云端数据库
+     */
+    public final static String API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhb3FidGh5b2hic2NoZHhudnlhIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc4MjYwNjEsImV4cCI6MTk5MzQwMjA2MX0.pYxApRJD3MjrOfE7--ygNx9toglBlRMwNlcmvbVKG0s";//apikey
+
     /**
      * 跳转
      */

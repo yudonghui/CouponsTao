@@ -175,6 +175,34 @@ public class HttpClient {
         });
     }
 
+    public void getLottery(String url, final YdhInterface mListener) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (mListener != null) {
+                    mListener.onSuccess(call.toString());
+                }
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String result = response.body().string();
+                    if (mListener != null) {
+                        mListener.onSuccess(result);
+                    }
+                    //处理UI需要切换到UI线程处理
+                }
+            }
+        });
+    }
+
     public FormBody getFormBody(HashMap<String, String> map) {
         FormBody.Builder builder = new FormBody.Builder();
         if (map != null) {

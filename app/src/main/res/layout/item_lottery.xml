@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_num"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:text="大乐透" />
+
+    <TextView
+        android:id="@+id/tv_one"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="12"
+        android:textColor="@color/color_red" />
+
+    <TextView
+        android:id="@+id/tv_two"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="12"
+        android:textColor="@color/color_red" />
+
+    <TextView
+        android:id="@+id/tv_three"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="12"
+        android:textColor="@color/color_red" />
+
+    <TextView
+        android:id="@+id/tv_four"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="12"
+        android:textColor="@color/color_red" />
+
+    <TextView
+        android:id="@+id/tv_five"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="12"
+        android:textColor="@color/color_red" />
+
+    <TextView
+        android:id="@+id/tv_six"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="12"
+        android:textColor="@color/blue_ff" />
+
+    <TextView
+        android:id="@+id/tv_seven"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="12"
+        android:textColor="@color/blue_ff" />
+</LinearLayout>

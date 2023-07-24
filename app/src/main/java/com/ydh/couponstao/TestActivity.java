@@ -286,4 +286,7 @@ public class TestActivity extends BaseActivity {
             }
         });
     }
+
+    public void startScreen(View view) {
+    }
 }

@@ -90,6 +90,12 @@
                 android:layout_height="wrap_content"
                 android:onClick="commonGet"
                 android:text="京东-社交媒体获取推广链接" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="startScreen"
+                android:text="测试截屏" />
         </LinearLayout>
 
     </ScrollView>
